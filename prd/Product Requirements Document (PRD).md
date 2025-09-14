@@ -106,6 +106,7 @@ Basic architecture:
    * Use flow chart  
    * Uses past anonymous sessions to improve future answers for new customers/sessions.  
    * Uses past sessions for the same customers \- no issues of privacy.
+   * this sub agent is the only one allowed to use the doc360 MCP
 
 3. **Error & Solution Handler** \- Sub-agents that keeps an eye on errors and solutions handling
 
