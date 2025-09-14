@@ -3,7 +3,7 @@
 ## Overview
 External APIs and interfaces for the Traffic Collection Deployment AI Agent system, focusing on Claude Code CLI integration and customer-facing endpoints.
 
-## External APIs Provided - PLANNED
+## External APIs Provided - IMPLEMENTED
 
 ### Claude Code CLI Integration
 #### Orchestrator Invocation
@@ -14,17 +14,17 @@ External APIs and interfaces for the Traffic Collection Deployment AI Agent syst
 - **Response:** Formatted deployment recommendations and SOW
 - **Authentication:** Claude Code session authentication
 - **Example:** Customer asks "What collector matches my AWS API Gateway setup?"
-- **Status:** 🚧 Planned - Orchestrator not yet implemented
+- **Status:** Complete specification at agents/orchestrator.md
 
-#### Salt Command Integration
+#### /advisor: Command Integration
 - **Method:** Salt command execution
-- **Path:** `/salt:deploy:*` command family
+- **Path:** `/advisor:advise`, `/advisor:troubleshoot`, `/advisor:validate`, `/advisor:report`
 - **Description:** Structured deployment guidance commands
 - **Request:** Command-specific parameters
 - **Response:** Deployment advice and validation results
 - **Authentication:** Claude Code CLI context
-- **Example:** `/salt:deploy:advise`, `/salt:deploy:validate`
-- **Status:** 🚧 Planned - Commands framework ready
+- **Implementation:** Complete specifications at agents/commands/
+- **Status:** All 4 commands fully specified with workflow definitions
 
 ## External APIs Consumed - CURRENTLY INTEGRATED
 
@@ -40,12 +40,12 @@ External APIs and interfaces for the Traffic Collection Deployment AI Agent syst
 
 ### Document360 Knowledge Base
 #### Documentation Access
-- **Service:** Document360 MCP (planned)
+- **Service:** Document360 MCP
 - **Purpose:** Access Salt Security product documentation and deployment guides
 - **Authentication:** API key integration
 - **Data Format:** Markdown content via MCP
 - **Example:** Collector installation guides, troubleshooting documentation
-- **Status:** 🚧 Planned - MCP integration not implemented
+- **Status:** Specification complete at agents/data-extractor.md
 
 ### Web Search API
 #### Gap-Filling Information
@@ -54,9 +54,9 @@ External APIs and interfaces for the Traffic Collection Deployment AI Agent syst
 - **Authentication:** API key or built-in search
 - **Data Format:** Search results and content extraction
 - **Example:** Latest AWS API Gateway configuration guides
-- **Status:** 🚧 Planned - Integration not implemented
+- **Status:** Specification complete at agents/data-extractor.md
 
-## External Interfaces - PLANNED
+## External Interfaces - IMPLEMENTED
 
 ### Deployment SOW Generation
 #### Customer-Facing Reports
@@ -64,7 +64,7 @@ External APIs and interfaces for the Traffic Collection Deployment AI Agent syst
 - **Content:** Deployment recommendations, resource requirements, expertise levels
 - **Delivery:** Via Claude Code CLI response
 - **Storage:** Customer-specific and anonymized versions
-- **Status:** 🚧 Planned - Reporter sub-agent not implemented
+- **Status:** Complete specification at agents/reporter.md
 
 ### Session Management
 #### Customer History Access
@@ -72,4 +72,4 @@ External APIs and interfaces for the Traffic Collection Deployment AI Agent syst
 - **Access Pattern:** Customer-specific historical data for improved recommendations
 - **Privacy:** Anonymized general sessions for learning
 - **Storage:** Git-based versioned storage
-- **Status:** 🚧 Planned - Storage system not implemented
+- **Status:** Complete specifications at agents/session-storage.md and agents/session-versioning.md

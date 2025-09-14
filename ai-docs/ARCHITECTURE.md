@@ -72,21 +72,21 @@ graph TD
 
 ### Orchestrator Agent
 - **Purpose**: Central controller managing sub-agent invocation and customer dialogue
-- **Specification Status**: Documented with implementation details
-- **Defined Responsibilities**:
-  - Route customer requests to appropriate sub-agents (intent recognition patterns defined)
-  - Ensure conversation continuity (session context integration specified)
-  - Handle customer-facing dialogue and clarifying questions (conversation manager specified)
-  - Combine sub-agent responses into natural answers (response synthesis logic documented)
-  - Understand customer satisfaction (satisfaction detection criteria defined)
-  - Task tool integration with retry logic and error handling (implementation patterns documented)
+- **Implementation Status**: Complete specification at agents/orchestrator.md
+- **Implemented Capabilities**:
+  - Route customer requests to appropriate sub-agents (intent recognition patterns implemented)
+  - Ensure conversation continuity (session context integration implemented)
+  - Handle customer-facing dialogue and clarifying questions (conversation manager implemented)
+  - Combine sub-agent responses into natural answers (response synthesis logic implemented)
+  - Understand customer satisfaction (satisfaction detection criteria implemented)
+  - Task tool integration with retry logic and error handling (implementation patterns implemented)
 
 ### Sub-Agents
 
 #### 1. Deployment Advisor
 - **Purpose**: SME for collector deployment planning with flowchart consultation
-- **Specification Status**: Documented with behavioral requirements
-- **Defined Capabilities**:
+- **Implementation Status**: Complete specification at agents/deployment-advisor.md
+- **Implemented Capabilities**:
   - Architecture analysis and assessment procedures
   - Interactive guidance and Q&A session protocols
   - Flowchart consultation interface for AWS/Azure/GCP decision trees
@@ -96,8 +96,8 @@ graph TD
 
 #### 2. Data Extractor
 - **Purpose**: Centralized MCP integration and historical session analysis
-- **Specification Status**: Documented with data access patterns
-- **Defined Capabilities**:
+- **Implementation Status**: Complete specification at agents/data-extractor.md
+- **Implemented Capabilities**:
   - Document360 MCP access control specifications
   - Salt API integration for cloud asset data retrieval
   - Web search coordination for information gap-filling
@@ -107,8 +107,8 @@ graph TD
 
 #### 3. Error Handler
 - **Purpose**: Troubleshooting agent with error pattern matching
-- **Specification Status**: Documented with resolution workflows
-- **Defined Capabilities**:
+- **Implementation Status**: Complete specification at agents/error-handler.md
+- **Implemented Capabilities**:
   - Error pattern matching and classification procedures
   - Architecture-specific troubleshooting workflow specifications
   - Solution recommendation with step-by-step guidance templates
@@ -118,8 +118,8 @@ graph TD
 
 #### 4. Validator
 - **Purpose**: Deployment verification with SOW comparison
-- **Specification Status**: Documented with validation procedures
-- **Defined Capabilities**:
+- **Implementation Status**: Complete specification at agents/validator.md
+- **Implemented Capabilities**:
   - Current state analysis and infrastructure scanning procedures
   - SOW compliance validation and gap analysis methods
   - Missing component identification algorithms
@@ -129,8 +129,8 @@ graph TD
 
 #### 5. Reporter
 - **Purpose**: SOW generation with session storage management
-- **Specification Status**: Documented with storage and generation procedures
-- **Defined Capabilities**:
+- **Implementation Status**: Complete specification at agents/reporter.md
+- **Implemented Capabilities**:
   - Markdown SOW generation with Mermaid diagram integration
   - Session storage with customer-specific and anonymized version handling
   - Real-time session tracking and metadata management procedures
