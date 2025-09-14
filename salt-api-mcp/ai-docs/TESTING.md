@@ -6,17 +6,19 @@ Comprehensive testing approach focusing on API integration, schema validation, a
 ## Running Tests
 
 ```bash
-# Run all tests
+# Run all tests (Jest framework)
 npm test
 
-# Run tests in watch mode
-npm run test:watch
+# Run CLI testing mode (implemented and working)
+npm run test-mode -- list_tools
+npm run test-mode -- list_cloud_assets --limit 5
+npm run test-mode -- get_cloud_asset --id test-asset-123
 
-# Run specific test suite
-npm test -- salt-api-client.test.ts
+# Show CLI test help
+npm run test-mode -- --help
 
-# Run tests with coverage
-npm run test:coverage
+# Build and run tests
+npm run build && npm run test-mode:build
 ```
 
 ## Test Coverage

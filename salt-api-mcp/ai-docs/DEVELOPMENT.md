@@ -21,18 +21,18 @@
 
 ## Technology Stack
 
-### Core Dependencies
-- **@modelcontextprotocol/sdk v1.0.0**: MCP protocol implementation
-- **axios v1.6.0**: HTTP client for API requests
-- **zod v3.22.0**: Runtime schema validation
-- **dotenv v16.3.1**: Environment variable management
+### Core Dependencies - CURRENT VERSIONS
+- **@modelcontextprotocol/sdk v1.18.0**: MCP protocol implementation (latest)
+- **axios v1.12.1**: HTTP client for Salt Security API requests
+- **zod v3.25.76**: Runtime schema validation and type coercion
+- **dotenv v16.6.1**: Environment variable management and security
 
-### Development Dependencies
-- **typescript v5.x**: TypeScript compiler and language support
-- **tsx v4.0.0**: TypeScript runner for development
-- **jest v29.0.0**: Testing framework
-- **ts-jest v29.0.0**: Jest TypeScript integration
-- **@types/node v20.x**: Node.js type definitions
+### Development Dependencies - CURRENT VERSIONS
+- **typescript v5.9.2**: TypeScript compiler with strict mode enabled
+- **tsx v4.20.5**: TypeScript execution engine for development
+- **jest v29.7.0**: Testing framework with comprehensive test support
+- **ts-jest v29.4.1**: Jest TypeScript integration and compilation
+- **@types/node v20.19.14**: Node.js type definitions for current runtime
 
 ### Build Tools
 - **TypeScript Compiler**: Source-to-build pipeline

@@ -1,20 +1,18 @@
 # Salt API MCP Server
 
 ## Overview
-MCP (Model Context Protocol) server that provides access to Salt Security's Cloud Assets API. This server enables AI assistants to retrieve and analyze cloud asset information from Salt Security's platform while maintaining secure authentication through Bearer tokens.
+Production-ready MCP (Model Context Protocol) server that provides secure access to Salt Security's Cloud Assets API. This server enables AI assistants to retrieve and analyze cloud asset information while maintaining enterprise-grade security and proper authentication practices.
 
-## Key Features - IMPLEMENTED
-- **List Cloud Assets**: Retrieve paginated list of company cloud assets with configurable limits
-- **Get Cloud Asset by ID**: Fetch detailed information about specific cloud assets
-- **Secure Authentication**: Bearer token authentication configured via environment variables
-- **Input Validation**: Comprehensive request/response validation using Zod schemas
-- **Error Handling**: Robust error handling with detailed error messages and status codes
-- **Type Safety**: Full TypeScript implementation with proper type definitions
-
-## Key Features - IN PROGRESS
-- Health check endpoint for API connectivity verification
-- Rate limiting and retry mechanisms
-- Comprehensive test suite
+## Key Features - IMPLEMENTED ✅
+- **MCP Protocol Compliance**: Full MCP 1.0 specification implementation
+- **List Cloud Assets**: Paginated cloud asset retrieval with configurable limits (1-1000)
+- **Get Cloud Asset by ID**: Individual asset lookup with detailed information
+- **Secure Authentication**: Environment variable-based Bearer token management
+- **Input Validation**: Runtime schema validation using Zod with type coercion
+- **Error Handling**: Comprehensive HTTP error mapping with user-friendly messages
+- **Type Safety**: Full TypeScript implementation with strict compilation
+- **CLI Testing**: Command-line testing interface with parameter validation
+- **Production Build**: Compiled JavaScript with source maps and type declarations
 
 ## Quick Start
 1. **Install dependencies**:
@@ -38,15 +36,23 @@ MCP (Model Context Protocol) server that provides access to Salt Security's Clou
    npm start
    ```
 
+5. **Test functionality** (optional):
+   ```bash
+   # Test MCP tools with CLI
+   npm run test-mode -- list_tools
+   npm run test-mode -- list_cloud_assets --limit 10
+   npm run test-mode -- get_cloud_asset --id your-asset-id
+   ```
+
 ## Technology Stack - CURRENT
-- **Runtime**: Node.js with ES modules
-- **Language**: TypeScript 5.x
-- **MCP Framework**: @modelcontextprotocol/sdk v1.0.0
-- **HTTP Client**: Axios v1.6.0
-- **Validation**: Zod v3.22.0
-- **Configuration**: dotenv v16.3.1
-- **Development**: tsx v4.0.0 (TypeScript runner)
-- **Testing**: Jest v29.0.0 with ts-jest
+- **Runtime**: Node.js 18+ with ES modules
+- **Language**: TypeScript 5.9.2 with strict type checking
+- **MCP Framework**: @modelcontextprotocol/sdk v1.18.0
+- **HTTP Client**: Axios v1.12.1 for Salt Security API integration
+- **Validation**: Zod v3.25.76 for runtime schema validation
+- **Configuration**: dotenv v16.6.1 for environment variable management
+- **Development**: tsx v4.20.5 (TypeScript execution engine)
+- **Testing**: Jest v29.7.0 with ts-jest v29.4.1
 
 ## Architecture
 See [ARCHITECTURE.md](ARCHITECTURE.md) for current system design and implemented components.
