@@ -34,8 +34,9 @@ External APIs and interfaces for the Traffic Collection Deployment AI Agent syst
 - **Purpose:** Retrieve customer cloud asset information for deployment recommendations
 - **Authentication:** Bearer token via environment variables
 - **Data Format:** JSON via MCP protocol
+- **Tools Available:** ✅ list_cloud_assets, get_cloud_asset
 - **Example:** Cloud asset discovery for AWS API Gateway, Azure APIM
-- **Status:** ✅ Working - MCP server fully functional
+- **Status:** ✅ Working - MCP server fully functional with CLI testing
 
 ### Document360 Knowledge Base
 #### Documentation Access
