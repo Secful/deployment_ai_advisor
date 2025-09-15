@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "MCP server for Salt Security Cloud Assets API",
   "main": "build/index.js",
+  "bin": {
+    "salt-api-mcp": "build/index.js"
+  },
   "type": "module",
   "scripts": {
     "build": "tsc",
@@ -27,7 +30,19 @@
     "@types/jest": "^29.0.0",
     "ts-jest": "^29.0.0"
   },
-  "keywords": ["mcp", "salt-security", "cloud-assets", "api"],
+  "keywords": ["mcp", "salt-security", "cloud-assets", "api", "modelcontextprotocol"],
   "author": "Salt Security",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/salt-security/salt-api-mcp.git"
+  },
+  "files": [
+    "build/**/*",
+    "README.md",
+    "INSTALLATION.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }

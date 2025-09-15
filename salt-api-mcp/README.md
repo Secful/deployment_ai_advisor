@@ -2,7 +2,31 @@
 
 MCP (Model Context Protocol) server for Salt Security's Cloud Assets API. Enables AI assistants to securely access and analyze cloud asset information.
 
-## Quick Start
+## Claude Code Integration (Recommended)
+
+### Super Simple Installation with Claude CLI
+
+1. **Install globally from this directory**:
+   ```bash
+   npm install -g .
+   ```
+
+2. **Add to Claude Code with one command**:
+   ```bash
+   claude mcp add salt-api-mcp --env SALT_BEARER_TOKEN=your_actual_salt_security_bearer_token_here -- salt-api-mcp
+   ```
+
+3. **Replace the token** with your real Salt Security Bearer token
+
+That's it! 🎉 You can now ask Claude about your Salt Security cloud assets.
+
+### Alternative: Manual Configuration
+
+If you prefer manual configuration, edit your Claude Code config file and restart Claude Code.
+
+See [INSTALLATION.md](INSTALLATION.md) for detailed manual setup instructions.
+
+## Development Quick Start
 
 1. **Install dependencies**:
    ```bash
