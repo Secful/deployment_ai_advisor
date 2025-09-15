@@ -38,10 +38,10 @@ tools: ["Read", "Grep", "Bash", "mcp__github__*"]
    - Access is done through MCP
    - Only read (get) operations are allowed
 
-2. **Flowcharts directory** (`/flowcharts/`) - Decision trees and deployment guidance diagrams
+2. **Flowcharts directory** (`/specifications/flowcharts/`) - Decision trees and deployment guidance diagrams
    - Contains deployment decision flowcharts and architectural guidance
    - Provides structured decision-making processes for deployment recommendations
-   - Located at project root `/flowcharts/` directory
+   - Located at `/specifications/flowcharts/` directory
 
 3. **Customer answers** retrieved through Q&A sessions between the agent and the customer
 
