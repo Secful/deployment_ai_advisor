@@ -2,6 +2,37 @@
 
 import { SaltApiClient } from "./salt-api-client.js";
 import { z } from "zod";
+import dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config();
+
+function maskToken(token: string): string {
+  if (!token || token.length <= 6) {
+    return "***";
+  }
+  const start = token.substring(0, 3);
+  const end = token.substring(token.length - 3);
+  return `${start}...${end}`;
+}
+
+function printTokenStatus() {
+  const token = process.env.SALT_BEARER_TOKEN;
+  
+  if (!token) {
+    console.log("❌ SALT_BEARER_TOKEN not configured");
+    console.log("📝 Setup Instructions:");
+    console.log("   1. Create .env file: cp .env.example .env");
+    console.log("   2. Edit .env and set: SALT_BEARER_TOKEN=your_actual_token");
+    console.log("   3. Restart the CLI test");
+    console.log();
+    return false;
+  }
+  
+  console.log(`✅ SALT_BEARER_TOKEN loaded: ${maskToken(token)}`);
+  console.log();
+  return true;
+}
 
 function printUsage() {
   console.log("🧪 MCP Server CLI Test Mode");
@@ -174,6 +205,12 @@ class MCPCLITester {
     console.log("🧪 MCP Server CLI Test Mode");
     console.log("============================\n");
     
+    // Check token status first
+    const hasToken = printTokenStatus();
+    if (!hasToken) {
+      process.exit(1);
+    }
+    
     console.log(`📋 Testing tool: ${tool}`);
     if (Object.keys(params).length > 0) {
       console.log(`📝 Parameters: ${JSON.stringify(params)}`);
@@ -195,16 +232,26 @@ class MCPCLITester {
         
         const isError = result?.content?.[0]?.text?.startsWith("Error:");
         const errorText = result?.content?.[0]?.text || "";
-        const isApiConnectivityError = errorText.includes("Authentication failed") || 
-                                     errorText.includes("Resource not found") ||
-                                     errorText.includes("Salt Security Bearer token not configured");
+        const isAuthError = errorText.includes("Authentication failed");
+        const isNotFoundError = errorText.includes("Resource not found");
+        const isTokenMissingError = errorText.includes("Salt Security Bearer token not configured");
 
-        if (isError && isApiConnectivityError) {
-          console.log("⚠️  SUCCESS - Tool executed (API connectivity/auth issue expected with test token)");
-          console.log(`📄 Response: ${errorText.substring(0, 100)}...`);
-        } else if (isError) {
-          console.log("❌ ERROR - Tool execution failed");
-          console.log(`📄 Error: ${errorText}`);
+        if (isError) {
+          if (isTokenMissingError) {
+            console.log("❌ ERROR - Bearer token not configured");
+            console.log(`📄 Error: ${errorText}`);
+          } else if (isAuthError) {
+            console.log("❌ ERROR - Authentication failed");
+            console.log("💡 Check if your Bearer token is valid and has the required permissions");
+            console.log(`📄 Error: ${errorText}`);
+          } else if (isNotFoundError) {
+            console.log("❌ ERROR - API endpoint not found");
+            console.log("💡 The API endpoint may have changed or your token may not have access");
+            console.log(`📄 Error: ${errorText}`);
+          } else {
+            console.log("❌ ERROR - Tool execution failed");
+            console.log(`📄 Error: ${errorText}`);
+          }
         } else {
           console.log("✅ SUCCESS - Tool executed successfully");
           console.log(`📄 Response: ${result.content[0].text.substring(0, 200)}...`);

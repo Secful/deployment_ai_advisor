@@ -44,15 +44,40 @@ Production-ready MCP (Model Context Protocol) server that provides secure access
    npm run test-mode -- get_cloud_asset --id your-asset-id
    ```
 
-## Technology Stack - CURRENT
-- **Runtime**: Node.js 18+ with ES modules
-- **Language**: TypeScript 5.9.2 with strict type checking
-- **MCP Framework**: @modelcontextprotocol/sdk v1.18.0
-- **HTTP Client**: Axios v1.12.1 for Salt Security API integration
-- **Validation**: Zod v3.25.76 for runtime schema validation
-- **Configuration**: dotenv v16.6.1 for environment variable management
-- **Development**: tsx v4.20.5 (TypeScript execution engine)
-- **Testing**: Jest v29.7.0 with ts-jest v29.4.1
+## Technology Stack - CURRENT IMPLEMENTATION
+
+### Core Runtime & Language
+- **Node.js**: ES modules with ES2022 target (tsconfig.json:3-4)
+- **TypeScript**: v5.0+ with strict compilation (package.json:24, tsconfig.json:8)
+- **Module System**: ESNext modules with Node resolution (tsconfig.json:4-5)
+
+### MCP Framework & Integration
+- **@modelcontextprotocol/sdk**: v1.0.0 - Core MCP server implementation (package.json:17)
+- **Transport**: StdioServerTransport for MCP client communication (src/index.ts:133)
+- **Protocol**: Full MCP v1.0 specification compliance
+
+### HTTP Client & API Integration
+- **Axios**: v1.6.0 - HTTP client with interceptors (package.json:18)
+- **Authentication**: Bearer token via environment variables (src/salt-api-client.ts:38-50)
+- **API Endpoint**: https://api.secured-api.com/v1 (src/salt-api-client.ts:43)
+- **Timeout**: 30-second request timeout (src/salt-api-client.ts:44)
+
+### Validation & Type Safety
+- **Zod**: v3.22.0 - Runtime schema validation (package.json:20)
+- **Request Validation**: MCP tool parameter schemas (src/index.ts:28-35)
+- **Response Validation**: API response schemas (src/salt-api-client.ts:9-31)
+- **Type Safety**: Complete TypeScript coverage with declarations
+
+### Configuration & Environment
+- **dotenv**: v16.3.1 - Environment variable management (package.json:19)
+- **Configuration**: SALT_BEARER_TOKEN environment variable (src/salt-api-client.ts:39)
+- **Build Output**: Compiled JavaScript with source maps (tsconfig.json:12-14)
+
+### Development Tools
+- **tsx**: v4.0+ - TypeScript execution engine (package.json:25)
+- **Build System**: TypeScript compiler with declarations (tsconfig.json:12-13)
+- **CLI Testing**: Custom testing interface (src/cli-test.ts, src/test-mode.ts)
+- **Jest**: v29.0+ testing framework (package.json:26-28)
 
 ## Architecture
 See [ARCHITECTURE.md](ARCHITECTURE.md) for current system design and implemented components.

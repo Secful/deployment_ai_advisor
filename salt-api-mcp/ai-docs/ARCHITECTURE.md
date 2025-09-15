@@ -1,97 +1,139 @@
 # System Architecture
 
 ## Overview
-The Salt API MCP Server is a lightweight TypeScript application that acts as a secure bridge between AI assistants and Salt Security's Cloud Assets API. It implements the Model Context Protocol (MCP) specification to provide standardized access to cloud asset data.
+The Salt API MCP Server is a production-ready Node.js/TypeScript application implementing the Model Context Protocol (MCP) v1.0 specification. It provides secure, authenticated access to Salt Security's Cloud Assets API through two MCP tools: `list_cloud_assets` and `get_cloud_asset`.
 
-## Mermaid Architecture Diagram
+## Comprehensive System Architecture
 
 ```mermaid
 graph TD
-    %% External entities
+    %% External entities and client interfaces
     A[AI Assistant/Client]:::client
-    B[Salt Security API]:::external
+    B[Salt Security API<br/>api.secured-api.com]:::external
+    CLI[CLI Test Interface<br/>npm run test-mode]:::testClient
     
-    %% MCP Server components
-    C[MCP Server]:::server
-    D[Salt API Client]:::apiClient
-    E[Request Handler]:::handler
-    F[Schema Validator]:::validator
+    %% Core MCP Server components
+    C[MCP Server Core<br/>src/index.ts:12-22]:::server
+    D[Salt API Client<br/>src/salt-api-client.ts:33]:::apiClient
     
-    %% Configuration
-    G[Environment Config]:::config
-    H[Bearer Token]:::auth
+    %% Request processing layers
+    E[Tool Request Handler<br/>src/index.ts:82-130]:::handler
+    F[Zod Schema Validator<br/>src/index.ts:28-35]:::validator
+    G[Response Formatter<br/>src/index.ts:91-112]:::formatter
     
-    %% Data flow
-    A -->|MCP Tools Request| C
-    C --> E
-    E --> F
-    F -->|Validated Request| D
-    D -->|HTTPS + Bearer Auth| B
+    %% Configuration and security
+    H[Environment Config<br/>.env SALT_BEARER_TOKEN]:::config
+    I[Bearer Authentication<br/>src/salt-api-client.ts:38-50]:::auth
+    J[Axios HTTP Client<br/>src/salt-api-client.ts:42-84]:::httpClient
+    
+    %% Development and testing infrastructure
+    K[TypeScript Build<br/>tsconfig.json → build/]:::build
+    L[CLI Testing System<br/>src/cli-test.ts]:::testing
+    M[Interactive Test Mode<br/>src/test-mode.ts]:::testing
+    
+    %% Main data flow
+    A -->|stdio MCP Protocol| C
+    CLI -->|Direct API Testing| D
+    C -->|Tool Discovery| E
+    C -->|Tool Execution| E
+    E -->|Parameter Validation| F
+    F -->|Valid Request| D
+    D -->|HTTPS Request<br/>Bearer Auth| B
     B -->|JSON Response| D
-    D -->|Parsed Data| F
-    F -->|Validated Response| E
-    E -->|MCP Response| C
-    C -->|Tool Result| A
+    D -->|Parsed Response| F
+    F -->|Schema Validation| G
+    G -->|MCP Response Format| E
+    E -->|Tool Result| C
+    C -->|stdio Response| A
     
-    %% Configuration connections
-    G --> H
-    H --> D
-    G --> C
+    %% Configuration flow
+    H -->|Environment Variables| I
+    I -->|Authorization Header| J
+    J -->|HTTP Interceptors| D
+    
+    %% Development workflow
+    K -->|Compiled JS| C
+    L -->|CLI Commands| D
+    M -->|Interactive Testing| D
     
     %% Component grouping
-    subgraph "MCP Server Process"
+    subgraph "MCP Server Runtime (Node.js)"
         C
         E
         F
+        G
         D
+        J
+        I
     end
     
-    subgraph "External Services"
+    subgraph "External Services & APIs"
         B
     end
     
-    subgraph "Configuration Layer"
-        G
+    subgraph "Development Infrastructure"
+        K
+        L
+        M
+        CLI
+    end
+    
+    subgraph "Configuration & Security"
         H
     end
     
-    %% Styling
-    classDef client fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
-    classDef server fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
-    classDef apiClient fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    %% Advanced styling
+    classDef client fill:#e1f5fe,stroke:#01579b,stroke-width:3px,color:#000
+    classDef testClient fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,color:#000
+    classDef server fill:#f3e5f5,stroke:#4a148c,stroke-width:3px,color:#000
+    classDef apiClient fill:#e8f5e8,stroke:#1b5e20,stroke-width:3px,color:#000
     classDef handler fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
     classDef validator fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
-    classDef external fill:#ffebee,stroke:#b71c1c,stroke-width:2px,color:#000
+    classDef formatter fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+    classDef httpClient fill:#e0f2f1,stroke:#00695c,stroke-width:2px,color:#000
+    classDef external fill:#ffebee,stroke:#b71c1c,stroke-width:3px,color:#000
     classDef config fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
     classDef auth fill:#fff8e1,stroke:#f57f17,stroke-width:2px,color:#000
+    classDef build fill:#fafafa,stroke:#616161,stroke-width:2px,color:#000
+    classDef testing fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px,color:#000
 ```
 
 ## Component Architecture
 
-### 1. MCP Server Core (`src/index.ts`)
-- **Purpose**: Main entry point implementing MCP protocol specification
-- **Responsibilities**:
-  - Tool registration and discovery
-  - Request routing and response handling
-  - Error boundary and exception handling
-  - Transport layer management (stdio)
-- **Key Features**:
-  - Implements `list_cloud_assets` and `get_cloud_asset` tools
-  - Schema-based input validation
-  - Standardized error responses
+### 1. MCP Server Core (`src/index.ts:12-22`)
+- **Implementation**: Complete MCP v1.0 server with stdio transport
+- **Key Functions**:
+  - `ListToolsRequestSchema` handler (src/index.ts:38-79) - Tool discovery for MCP clients
+  - `CallToolRequestSchema` handler (src/index.ts:82-130) - Tool execution with error handling
+  - Server initialization with capability registration (src/index.ts:12-22)
+- **Transport**: StdioServerTransport for MCP client communication (src/index.ts:133)
+- **Status**: ✅ Production ready, fully functional
 
-### 2. Salt API Client (`src/salt-api-client.ts`)
-- **Purpose**: Abstraction layer for Salt Security API integration
-- **Responsibilities**:
-  - HTTP client configuration and management
-  - Authentication token injection
-  - Request/response transformation
-  - API-specific error handling
-- **Key Features**:
-  - Axios-based HTTP client with interceptors
-  - Bearer token authentication from environment
-  - Response schema validation with Zod
-  - Comprehensive error mapping
+### 2. Salt API Client (`src/salt-api-client.ts:33`)
+- **Implementation**: Complete Axios-based HTTP client with interceptors
+- **Core Methods**:
+  - `listCloudAssets()` (src/salt-api-client.ts:93-117) - Paginated asset listing
+  - `getCloudAsset()` (src/salt-api-client.ts:124-147) - Individual asset retrieval
+  - `healthCheck()` (src/salt-api-client.ts:153-161) - API connectivity verification
+- **Security Features**:
+  - Bearer token authentication (src/salt-api-client.ts:38-50)
+  - Request/response interceptors (src/salt-api-client.ts:52-84)
+  - Comprehensive error handling and mapping
+- **Status**: ✅ Production ready, fully functional
+
+### 3. Schema Validation System
+- **Request Validation**: Zod schemas for MCP tool parameters (src/index.ts:28-35)
+- **Response Validation**: API response validation (src/salt-api-client.ts:9-31)
+- **Type Safety**: Complete TypeScript coverage with runtime validation
+- **Error Handling**: Validation errors with detailed messages
+- **Status**: ✅ Comprehensive validation implemented
+
+### 4. Development & Testing Infrastructure
+- **CLI Testing**: Command-line testing interface (src/cli-test.ts)
+- **Interactive Testing**: User-guided testing mode (src/test-mode.ts)
+- **Build System**: TypeScript compilation to build/ directory
+- **Type Declarations**: Full .d.ts generation with source maps
+- **Status**: ✅ Complete development toolchain
 
 ### 3. Request Flow Architecture
 
