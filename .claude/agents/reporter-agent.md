@@ -83,6 +83,21 @@ reporter_request:
     customer_architecture: {} | null
     conversation_transcript: [] | null
 
+  confidence_data:  # Confidence information from orchestrator
+    overall_confidence: 1-10  # Aggregated confidence score from all sub-agents
+    contributing_agents: []   # List of sub-agents that contributed to confidence
+    confidence_breakdown:     # Individual confidence scores by agent
+      deployment_advisor: 1-10 | null
+      error_handler: 1-10 | null
+      validator: 1-10 | null
+      data_extractor: 1-10 | null
+    source_availability:      # Which data sources were successfully accessed
+      product_kb_mcp: boolean
+      deployment_flowcharts: boolean
+      customer_history: boolean
+      web_sources: boolean
+    degradation_applied: boolean  # Whether graceful degradation was applied
+
   output_preferences:
     format: "markdown" | "json" | "pdf"
     detail_level: "summary" | "standard" | "comprehensive"
@@ -241,13 +256,52 @@ reporter_response:
 **Estimated Effort**: [X] hours
 **Success Criteria**: Traffic data successfully collected and available in Salt Security platform
 
+### Recommendation Confidence
+**Overall Confidence**: [overall_confidence/10] based on aggregated sub-agent analysis
+**Contributing Agents**: [List from contributing_agents]
+**Sub-Agent Confidence Breakdown**:
+- Deployment Advisor: [deployment_advisor_score/10] (if applicable)
+- Error Handler: [error_handler_score/10] (if applicable)
+- Validator: [validator_score/10] (if applicable)
+- Data Extractor: [data_extractor_score/10] (if applicable)
+
+**Data Sources Successfully Consulted**:
+- Product Knowledge Base: [✅/❌ based on product_kb_mcp]
+- Deployment Flowcharts: [✅/❌ based on deployment_flowcharts]
+- Customer History: [✅/❌ based on customer_history]
+- Web Sources: [✅/❌ based on web_sources]
+
 ## Architecture Overview
 [Mermaid Architecture Diagram]
 
-### Components
-- **Primary Service**: [API Gateway/Load Balancer/etc.]
+### Customer Architecture Analysis
+**Current Infrastructure**:
+- **Cloud Provider**: [AWS/Azure/GCP]
+- **Primary Services**: [API Gateway/Load Balancer/etc.]
 - **Monitoring**: [CloudWatch/Application Insights/Operations Suite]
-- **Salt Collector**: [Configuration and deployment details]
+- **CA Certificates**: [Certificate status and management]
+- **Salt Hybrid Version**: [Current version and compatibility]
+- **Network Configuration**: [VPC, security groups, routing]
+
+**Prerequisites Assessment**:
+- **Requirements Met**: [✅/❌] [List of met requirements]
+- **Gaps Identified**: [List of gaps that need to be addressed]
+- **Deployment Status**: [Current collector deployment and traffic collection status]
+
+### Recommended Components
+- **Salt Collector**: [Specific collector type and configuration]
+- **Integration Points**: [How collector integrates with customer architecture]
+- **Architecture Fit**: [Why this approach fits customer's specific architecture]
+
+## Deployment Options Analysis
+*Include this section when multiple deployment options are available*
+
+| Option | Complexity | Time | Success Rate | Architecture Fit | Pros | Cons |
+|--------|------------|------|--------------|------------------|------|------|
+| [Option 1] | [1-10] | [X hours] | [XX%] | [Fit description] | [Pros list] | [Cons list] |
+| [Option 2] | [1-10] | [X hours] | [XX%] | [Fit description] | [Pros list] | [Cons list] |
+
+**Recommended Option**: [Selected option] based on [rationale]
 
 ## Implementation Plan
 
@@ -256,6 +310,7 @@ reporter_response:
    - [ ] Required IAM/RBAC permissions
    - [ ] Network connectivity requirements
    - [ ] Salt Security collector access
+   - [ ] Address identified architecture gaps
 
 2. **Tool Setup**
    - [ ] AWS/Azure/GCP CLI configuration
@@ -287,6 +342,33 @@ reporter_response:
 - Monitoring and maintenance procedures
 - Troubleshooting contacts and escalation
 - Documentation and runbook locations
+
+## Source Transparency and Best-Effort Sections
+*Include this section when confidence is below 7/10 or sources are unavailable*
+
+### ⚠️ Best-Effort Recommendations
+**Limited Data Notice**: Some recommendations in this SOW are based on best-effort analysis due to:
+- [List unavailable sources: Product KB, flowcharts, etc.]
+- [Specify data limitations or conflicts]
+
+**Affected Sections**:
+- [Section Name]: Based on [available source] - requires validation
+- [Section Name]: General guidance only - specific implementation may vary
+
+**Recommended Actions**:
+1. Validate recommendations against current Salt Security documentation
+2. Test implementation in non-production environment first
+3. Consider escalation for critical deployment decisions
+
+### Data Source Summary
+**Successfully Consulted**:
+- ✅ Product Knowledge Base (MCP): [Status]
+- ✅ Deployment Flowcharts: [Status]
+- ✅ Customer History: [Status]
+- ✅ Cloud Provider Documentation: [Status]
+
+**Unavailable or Limited**:
+- ❌ [Source]: [Reason for unavailability and impact]
 ```
 
 ### Validation Diff Report Template
@@ -410,13 +492,30 @@ reporter_response:
 
 ## Implementation Instructions
 
-When activated by orchestrator:
+When activated by the orchestrator (as final sub-agent in all flows to generate SOW documents or validation reports):
 1. Parse YAML input to determine reporting requirements
-2. Generate appropriate documentation based on scope (SOW or validation report)
-3. Create Mermaid diagrams for visual representation
-4. **Automatically store session data** with proper versioning and privacy controls under `/sessions/{api_key}/{version}/`
-5. Create anonymized learning version for future reference
-6. Generate analytics and learning insights
-7. Format comprehensive response in YAML
+2. **Extract Confidence Data**: Process confidence_data section from orchestrator input:
+   - Use overall_confidence score provided by orchestrator
+   - Reference confidence_breakdown for detailed sub-agent scores
+   - Check source_availability to identify successfully consulted sources
+   - Determine if degradation_applied flag is set
+3. Generate appropriate documentation based on scope (SOW or validation report)
+4. **Apply Source Transparency Based on Orchestrator Confidence**:
+   - Use orchestrator's overall_confidence score (don't recalculate)
+   - Include confidence scores in Executive Summary
+   - Add "Source Transparency and Best-Effort Sections" when overall_confidence < 7/10
+   - Clearly mark sections based on limited data using source_availability
+   - List successfully consulted vs unavailable sources from orchestrator data
+6. Create Mermaid diagrams for visual representation
+7. **Automatically store session data** with proper versioning and privacy controls under `/sessions/{api_key}/{version}/`
+8. Create anonymized learning version for future reference
+9. Generate analytics and learning insights
+10. Format comprehensive response in YAML
+
+**Source Transparency Requirements**:
+- Always indicate which sources were successfully consulted
+- Mark uncertain sections as "best-effort" when primary sources unavailable
+- Provide specific validation recommendations for limited-data sections
+- Include escalation guidance for critical decisions with low confidence
 
 Focus on creating professional, actionable documentation that serves both immediate deployment needs and long-term system improvement through learning.
