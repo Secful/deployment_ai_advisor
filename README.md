@@ -39,7 +39,6 @@ claude
 - `/advisor:advise "AWS API Gateway setup" --detail-level comprehensive`
 - `/advisor:troubleshoot "403 permission errors" --cloud-provider aws --verbose`
 - `/advisor:validate "deployment completeness" --validation-depth comprehensive`
-- `/advisor:report "sow" --format markdown --include-diagrams`
 
 **Command Discovery:**
 - Type `/` in Claude Code CLI to see all available commands with autocompletion

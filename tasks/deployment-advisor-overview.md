@@ -22,7 +22,7 @@ AI-powered assistant that helps Salt Security customers deploy, troubleshoot, an
 - ✅ Multi-Agent Orchestrator System - 6 working Claude Code subagents in `.claude/agents/` with proper YAML frontmatter
 - ✅ Specialized Sub-Agents - orchestrator, deployment-advisor, data-extractor, error-handler, validator, reporter
 - ✅ Cloud Decision Flowcharts - Complete AWS, Azure, GCP deployment decision trees in `specifications/flowcharts/`
-- ✅ /advisor: Commands - 4 working native CLI commands with autocompletion in `.claude/commands/advisor/`
+- ✅ /advisor: Commands - 3 working native CLI commands with autocompletion in `.claude/commands/advisor/`
 - ✅ Session Storage System - Complete specifications for versioning, anonymized learning, and historical analysis
 - ✅ Error Handling - YAML status codes, retry logic, circuit breakers, and escalation specifications implemented
 - ✅ Salt API MCP Integration - Production-ready MCP server (TypeScript 5.9.2 + Node.js 18+) with 2 working API tools
@@ -55,7 +55,6 @@ AI-powered assistant that helps Salt Security customers deploy, troubleshoot, an
 - **✅ /advisor:advise**: Working native CLI command with natural language query processing and autocompletion
 - **✅ /advisor:troubleshoot**: Working error analysis command with architecture-aware solutions and verbose output
 - **✅ /advisor:validate**: Working deployment verification command with SOW comparison and gap analysis
-- **✅ /advisor:report**: Working SOW generation command with Mermaid diagrams and multiple output formats
 
 ### ✅ Session Management - IMPLEMENTED SPECIFICATIONS
 - **✅ Session Storage**: Complete specifications for real-time storage with direct file writes during conversations
