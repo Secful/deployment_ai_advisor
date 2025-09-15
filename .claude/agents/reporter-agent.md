@@ -492,7 +492,7 @@ reporter_response:
 
 ## Implementation Instructions
 
-When activated by orchestrator:
+When activated by the orchestrator (as final sub-agent in all flows to generate SOW documents or validation reports):
 1. Parse YAML input to determine reporting requirements
 2. **Extract Confidence Data**: Process confidence_data section from orchestrator input:
    - Use overall_confidence score provided by orchestrator

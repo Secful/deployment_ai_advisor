@@ -239,50 +239,6 @@ deployment_advisor_response:
   confidence_score: 8
 ```
 
-## Optimal Deployment Flow
-
-The deployment advisor follows this comprehensive 8-step flow to establish optimal collector deployment:
-
-### Step 1: Cloud Assets Extraction
-- Based on API key and cloud provider, call data-extractor to extract all relevant cloud assets
-- Get complete inventory of customer's infrastructure and services
-
-### Step 2: Knowledge Base and Flowchart Analysis
-- Use data-extractor to access Doc360 resources for information relevant to discovered assets
-- Consult flowchart library for deployment guidance matching asset types
-- Extract all relevant documentation for similar asset types if exact matches not found
-
-### Step 3: Gap Analysis and Customer Engagement
-- Identify gaps or missing information from assets and documentation
-- Use WWW search via data-extractor for additional information if needed
-- Ask customer to fill gaps, provide special requests, or emphasize specific issues
-
-### Step 4: Historical Context Analysis
-- Consult history for specific API key (use latest version session if exists)
-- Extract lessons learned and previous deployment approaches for this customer
-
-### Step 5: Collector Identification and Rating
-- Create comprehensive list of all possible collectors relevant to discovered cloud assets
-- Rate collectors based on history (if exists) and documentation
-- Establish viability ranking for later optimization
-
-### Step 6: Prerequisites Analysis - Documentation
-- Use data-extractor to extract all relevant prerequisites from Doc360 for each viable collector
-- Get complete requirements documentation for each collector option
-
-### Step 7: Prerequisites Analysis - Cloud Assets
-- Use data-extractor to extract prerequisites that can be gathered from cloud assets
-- Identify which requirements are already met vs missing
-- Ask user for prerequisites details not accessible (e.g., CA certificates, credentials)
-
-### Step 8: Optimal Deployment Plan
-- Based on all collectors where prerequisites are met, suggest optimal deployment plan
-- Optimize using KPIs for deployment efficiency:
-  - **Full Coverage**: Comprehensive traffic collection and monitoring
-  - **Lower Risk**: Proven, stable deployment approaches
-  - **Lower Effort**: Minimal implementation complexity and time
-  - **Cost**: Resource efficiency and operational cost optimization
-
 ## Risk Assessment
 
 ### Common Deployment Risks
@@ -386,7 +342,7 @@ Set escalation_required to true when:
 
 ## Implementation Instructions
 
-When activated by the orchestrator, execute the comprehensive 8-step optimal deployment flow:
+When activated by the orchestrator (either as first sub-agent in initial deployment flow or after error-handler in troubleshoot flow), execute the appropriate deployment flow:
 
 **Preparation**:
 1. **Parse Input and Context**: Extract deployment requirements and customer context from YAML input

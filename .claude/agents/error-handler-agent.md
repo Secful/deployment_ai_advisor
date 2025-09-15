@@ -275,7 +275,7 @@ When escalating, provide:
 
 ## Implementation Instructions
 
-When activated by orchestrator:
+When activated by the orchestrator (as first sub-agent in troubleshoot flow after receiving error reports):
 1. Parse YAML input to extract error context and symptoms
 2. Run pattern matching against known error library
 3. Generate diagnostic procedures for validation

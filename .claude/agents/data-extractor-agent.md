@@ -310,7 +310,7 @@ Include confidence interval based on sample size:
 
 ## Implementation Instructions
 
-When activated by orchestrator or other sub-agents:
+When activated by the orchestrator or called by other sub-agents via Task tool for data retrieval:
 1. **Parse YAML input** to determine data requirements and customer context
 2. **Start with Salt API MCP Server**: Always retrieve customer cloud assets first using `list_cloud_assets` and `get_cloud_asset` - this is the foundation for all deployment decisions
 3. **Supplement with Document360 MCP**: Retrieve relevant product documentation for deployment scenarios

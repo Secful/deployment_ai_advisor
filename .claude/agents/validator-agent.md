@@ -337,7 +337,7 @@ validator_response:
 
 ## Implementation Instructions
 
-When activated by orchestrator:
+When activated by the orchestrator (as first sub-agent in validation flow to compare SOW against actual deployment):
 1. Parse YAML input to determine validation scope and requirements
 2. Call data-extractor sub-agent using Task tool to get current deployment state
 3. Compare actual state against SOW requirements
