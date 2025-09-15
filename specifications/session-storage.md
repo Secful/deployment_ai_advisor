@@ -38,7 +38,7 @@ session_storage_handler:
 session_metadata:
   session_info:
     session_id: "orchestrator-session-{uuid}"
-    customer_company_id: "customer-{hash}"
+    api_key: "customer-{hash}"
     session_version: "v{major}.{minor}.{patch}"
     created_timestamp: "ISO 8601 format"
     last_updated_timestamp: "ISO 8601 format"
@@ -189,7 +189,7 @@ anonymized_sessions:
   learning_data_structure:
     anonymized_session_format:
       session_id: "learning-session-{uuid}"
-      customer_hash: "md5({customer_company_id})"
+      customer_hash: "md5({api_key})"
       architecture_pattern: "standardized architecture identifier"
       deployment_complexity: "1-10 complexity score"
       success_indicators: "quantified success metrics"
@@ -342,7 +342,7 @@ satisfaction_indicators:
 ```yaml
 file_operations:
   directory_creation:
-    pattern: "/sessions/{customer_company_id}/{version}/"
+    pattern: "/sessions/{api_key}/{version}/"
     timing: "Created on first interaction with customer"
     permissions: "Restricted to system user only"
 

@@ -95,6 +95,10 @@ data_extractor_request:
     keywords: []
     architecture_type: string | null
     deployment_scenario: string | null
+
+  customer_context:
+    api_key: "anonymized-hash" | null
+
   retry_count: 0
 ```
 

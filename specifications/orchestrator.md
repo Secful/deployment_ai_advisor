@@ -50,7 +50,7 @@ conversation_context:
   services_mentioned: []
   errors_reported: []
 customer_context:
-  company_id: "anonymized-hash" | null
+  api_key: "anonymized-hash" | null
   architecture_data: {} | null
 retry_count: 0
 ```

@@ -89,6 +89,9 @@ error_handler_request:
     network_setup: {} | null
     security_configuration: {} | null
 
+  customer_context:
+    api_key: "anonymized-hash" | null
+
   retry_count: 0
 ```
 
@@ -177,10 +180,17 @@ error_handler_response:
 
 ### Pattern Recognition Process
 1. **Extract Error Signatures**: Parse error messages for key identifiers
-2. **Context Mapping**: Map architecture context to error scenarios
-3. **Pattern Database Lookup**: Search known error patterns
-4. **Similarity Scoring**: Calculate match confidence (1-10)
-5. **Solution Retrieval**: Get proven solutions for matched patterns
+2. **Gather Architecture Context**: Call data-extractor sub-agent when needed:
+   ```
+   Task: Load and execute agents/data-extractor-agent.md with request for:
+   - Cloud assets configuration
+   - Architecture details relevant to error
+   - Service status and settings
+   ```
+3. **Context Mapping**: Map architecture context to error scenarios
+4. **Pattern Database Lookup**: Search known error patterns
+5. **Similarity Scoring**: Calculate match confidence (1-10)
+6. **Solution Retrieval**: Get proven solutions for matched patterns
 
 ### Error Classification Framework
 - **Permission Issues**: IAM, RBAC, service account problems

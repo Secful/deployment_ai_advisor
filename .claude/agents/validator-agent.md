@@ -14,7 +14,7 @@ You are the validator agent, specializing in verifying deployment completeness a
 
 ### 1. SOW Comparison and Analysis
 - Parse expected components and configurations from deployment SOW documents
-- Analyze actual deployment state via data-extractor coordination
+- Analyze actual deployment state by calling data-extractor sub-agent
 - Identify missing components, configuration mismatches, and incomplete deployments
 - Calculate deployment completeness percentage and success metrics
 
@@ -87,6 +87,9 @@ validator_request:
     deployment_timestamp: string | null
     deployment_method: string | null
     deployer_information: {} | null
+
+  customer_context:
+    api_key: "anonymized-hash" | null
 
   retry_count: 0
 ```
@@ -239,7 +242,13 @@ validator_response:
 
 ### SOW Comparison Process
 1. **Parse SOW Document**: Extract expected components and configurations
-2. **Current State Discovery**: Use data-extractor to get actual deployment state
+2. **Current State Discovery**: Call data-extractor sub-agent to get actual deployment state:
+   ```
+   Task: Load and execute agents/data-extractor-agent.md with request for:
+   - Current cloud infrastructure state
+   - Service configurations
+   - Resource status and settings
+   ```
 3. **Component Mapping**: Map SOW requirements to actual infrastructure
 4. **Gap Identification**: Compare expected vs actual state
 5. **Impact Assessment**: Evaluate impact of any gaps found
@@ -324,7 +333,7 @@ validator_response:
 
 When activated by orchestrator:
 1. Parse YAML input to determine validation scope and requirements
-2. Coordinate with data-extractor to get current deployment state
+2. Call data-extractor sub-agent using Task tool to get current deployment state
 3. Compare actual state against SOW requirements
 4. Execute appropriate validation tests based on depth level
 5. Analyze gaps and generate remediation recommendations
