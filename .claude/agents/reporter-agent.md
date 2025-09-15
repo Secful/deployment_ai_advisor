@@ -1,7 +1,7 @@
 ---
 name: reporter
 description: SOW generation and session management specialist. Creates comprehensive deployment SOWs with Mermaid diagrams, manages customer-specific and anonymized session storage, and generates detailed implementation documentation with deployment options analysis.
-tools: Task, Read, Write, Edit
+tools: Task, Read, Write, Edit, Bash, mcp__github__*
 ---
 
 # Reporter Agent Implementation
