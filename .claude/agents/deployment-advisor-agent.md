@@ -67,6 +67,16 @@ deployment_advisor_request:
     cloud_provider: "aws" | "azure" | "gcp" | null
     services_mentioned: []
     user_expertise_level: "beginner" | "intermediate" | "expert" | null
+  error_resolution_context:  # Present when updating recommendations after troubleshooting
+    error_analysis:
+      error_classification: string | null
+      severity_level: string | null
+      affected_components: [] | null
+      root_cause_hypothesis: string | null
+    solution_recommendations:
+      primary_solution: {} | null
+      alternative_solutions: [] | null
+    remediation_requirements: [] | null
   customer_context:
     api_key: "anonymized-hash" | null
     architecture_data: {} | null
@@ -95,6 +105,10 @@ deployment_advisor_response:
         - "IAM permissions for CloudWatch access"
         - "API Gateway logging enabled"
         - "Salt Security collector installed"
+      error_remediation_steps:  # Present when error_resolution_context provided
+        - "Apply error-handler solution: Fix IAM permissions"
+        - "Implement error prevention: Enhanced monitoring"
+        - "Validate error resolution: Test connectivity"
       deployment_steps:
         - "Step 1: Configure IAM role"
         - "Step 2: Enable API Gateway logging"
@@ -185,6 +199,15 @@ deployment_advisor_response:
 3. Provide options based on common scenarios
 4. Set appropriate confidence levels for assumptions
 
+### When Error Resolution Context is Present
+When `error_resolution_context` is provided (Flow 2 - Troubleshooting):
+1. **Analyze Error Impact**: Review error classification and affected components
+2. **Incorporate Solutions**: Integrate error-handler solutions into deployment recommendations
+3. **Address Root Cause**: Modify deployment approach to prevent error recurrence
+4. **Update Prerequisites**: Add error-prevention steps to implementation prerequisites
+5. **Adjust Complexity**: Factor error resolution complexity into deployment scoring
+6. **Validate Remediation**: Ensure updated recommendations address the original error
+
 ### Data Dependencies
 When you need cloud architecture data:
 1. **Call data-extractor sub-agent** using Task tool:
@@ -215,11 +238,22 @@ Set escalation_required to true when:
 
 When activated by the orchestrator:
 1. Parse the YAML input to extract deployment requirements
-2. Read relevant flowchart files based on cloud provider
-3. Navigate decision tree applying customer context
-4. Generate primary recommendation with confidence scoring
-5. Develop implementation steps and prerequisites
-6. Consider alternative options and trade-offs
-7. Format complete response in YAML format
+2. **Check for Error Resolution Context**: If `error_resolution_context` is present (Flow 2):
+   - Extract error analysis, solutions, and affected components
+   - Incorporate error-handler recommendations into deployment plan
+   - Modify deployment approach to prevent error recurrence
+   - Add remediation steps to implementation details
+3. Read relevant flowchart files based on cloud provider
+4. Navigate decision tree applying customer context and error context
+5. Generate primary recommendation with confidence scoring incorporating error resolution
+6. Develop implementation steps, prerequisites, and error remediation steps
+7. Consider alternative options and trade-offs including error prevention
+8. Format complete response in YAML format
+
+**Flow 2 Specific Processing**:
+- Integrate error-handler solutions into deployment recommendations
+- Ensure updated deployment prevents the original error from recurring
+- Include error remediation steps in implementation details
+- Factor error resolution complexity into scoring and time estimates
 
 Focus on providing actionable, specific guidance that matches the customer's technical expertise level and deployment requirements.

@@ -62,6 +62,11 @@ conversation_context:
   cloud_provider: "aws" | "azure" | "gcp" | null
   services_mentioned: []
   errors_reported: []
+error_resolution_context:  # Include when calling deployment-advisor after error-handler
+  error_analysis: {} | null
+  solution_recommendations: {} | null
+  root_cause: string | null
+  affected_components: [] | null
 customer_context:
   api_key: "anonymized-hash" | null
   architecture_data: {} | null
@@ -92,9 +97,11 @@ confidence_score: 1-10
 
 1. **Request API Key**: Ask user for API key (required for all operations)
 2. **Generate Recommendations**: Invoke `deployment-advisor` to create deployment plan (advisor gathers requirements as needed)
-3. **Create SOW**: Invoke `reporter` to generate initial deployment SOW markdown document (reporter handles session storage)
-4. **Deliver SOW**: Provide deployment SOW markdown document to customer
-5. **Escalation Check**: If unable to generate recommendations or SOW, suggest escalation to support
+3. **Process Confidence**: Extract and evaluate confidence_score from deployment-advisor response
+4. **Create SOW**: Invoke `reporter` with aggregated confidence data to generate initial deployment SOW markdown document (reporter handles session storage)
+5. **Apply Graceful Degradation**: If confidence < 7/10, ensure SOW includes transparency sections and best-effort warnings
+6. **Deliver SOW**: Provide deployment SOW markdown document to customer
+7. **Escalation Check**: If unable to generate recommendations, SOW, or confidence < 5/10, suggest escalation to support
 
 ### Flow 2: Troubleshoot (nth run - SOW exists, error reported)
 **Trigger**: Command type "troubleshoot" or error reports
@@ -102,10 +109,13 @@ confidence_score: 1-10
 
 1. **Request API Key**: Ask user for API key (required for all operations)
 2. **Error Analysis**: Invoke `error-handler` to analyze error and provide solutions (handler gathers error details as needed)
-3. **Update Recommendations**: Invoke `deployment-advisor` to revise deployment plan (advisor gathers context as needed)
-4. **Update SOW**: Invoke `reporter` to generate updated deployment SOW markdown document (reporter handles session storage)
-5. **Deliver SOW**: Provide updated deployment SOW markdown document to customer
-6. **Escalation Check**: If unable to resolve error or update SOW, suggest escalation to support
+3. **Capture Error Resolution**: Process error-handler YAML response and extract solution recommendations, root cause analysis, remediation steps, and confidence_score
+4. **Update Recommendations**: Invoke `deployment-advisor` with error analysis results to revise deployment plan incorporating error resolution
+5. **Process Aggregated Confidence**: Calculate overall confidence from error-handler (step 3) and deployment-advisor (step 4) scores using minimum confidence approach
+6. **Update SOW**: Invoke `reporter` with aggregated confidence data and error resolution context to generate updated deployment SOW markdown document including error remediation (reporter handles session storage)
+7. **Apply Graceful Degradation**: If aggregated confidence < 7/10, ensure updated SOW includes transparency sections and best-effort warnings
+8. **Deliver SOW**: Provide updated deployment SOW markdown document to customer
+9. **Escalation Check**: If unable to resolve error, update SOW, or aggregated confidence < 5/10, suggest escalation to support
 
 ### Flow 3: Validate (SOW exists, compare to cloud assets)
 **Trigger**: Command type "validate" or validation requests
@@ -113,9 +123,11 @@ confidence_score: 1-10
 
 1. **Request API Key**: Ask user for API key (required for all operations)
 2. **Comparison**: Invoke `validator` to compare SOW against actual cloud status (validator gathers validation scope as needed)
-3. **Generate Report**: Invoke `reporter` to generate validation diff report as markdown document (reporter handles session storage)
-4. **Deliver Report**: Provide validation diff report markdown document to customer
-5. **Escalation Check**: If unable to validate deployment or generate report, suggest escalation to support
+3. **Process Validation Confidence**: Extract confidence_score from validator response reflecting validation completeness and reliability
+4. **Generate Report**: Invoke `reporter` with validation confidence data to generate validation diff report as markdown document (reporter handles session storage)
+5. **Apply Graceful Degradation**: If validation confidence < 7/10, ensure report includes limitations and validation gaps
+6. **Deliver Report**: Provide validation diff report markdown document to customer
+7. **Escalation Check**: If unable to validate deployment, generate report, or validation confidence < 5/10, suggest escalation to support
 
 ## Error Handling and Retry Logic
 
@@ -136,9 +148,36 @@ Recommend support escalation when:
 8. **Pattern Recognition**: Repeated failure patterns detected across sessions
 
 ### Graceful Degradation
-- Provide best-effort responses when some sub-agents fail
-- Use cached or general guidance when specific recommendations unavailable
-- Clear communication about limitations and alternative approaches
+When sub-agents fail or data sources are unavailable, follow this degradation hierarchy based on source of truth precedence:
+
+1. **Primary Sources Unavailable**: If Product KB (MCP) or flowcharts fail:
+   - Attempt to use customer-specific history from `/sessions/{api_key}/`
+   - Fall back to anonymized general history from `/learning-sessions/`
+   - Use web search for cloud provider documentation as last resort
+
+2. **Partial Data Available**: When some sources succeed but others fail:
+   - Clearly indicate which sources were consulted successfully
+   - Mark uncertain recommendations as "best effort" in SOW output
+   - Provide confidence scores reflecting available data quality
+
+3. **Best-Effort Response Format**: When providing degraded responses:
+   ```markdown
+   ⚠️ **Best Effort Recommendation**
+
+   **Available Sources**: [List successfully accessed sources]
+   **Unavailable Sources**: [List failed sources and impact]
+   **Confidence Level**: [1-10 scale based on available data]
+
+   **Recommendation**: [Provide available guidance]
+   **Limitations**: [Clearly state what couldn't be verified]
+   **Next Steps**: [Suggest validation or escalation]
+   ```
+
+4. **Transparency Requirements**: Always inform customer when:
+   - Primary sources (Product KB, flowcharts) are unavailable
+   - Recommendations are based on historical patterns only
+   - External sources conflict with available internal data
+   - Confidence levels are below 7/10
 
 ### Escalation Message Template
 When escalation is required, provide this message:
@@ -215,7 +254,14 @@ parsed_command:
 
 ### Response Quality Assurance
 - Validate sub-agent responses match expected YAML schema
-- Check confidence scores and escalate low-confidence responses
+- **Extract and Aggregate Confidence Scores**:
+  - Single sub-agent: Use confidence_score directly
+  - Multiple sub-agents: Use minimum confidence score (most conservative approach)
+  - Document which sub-agents contributed to overall confidence
+- **Enforce Graceful Degradation Policy**:
+  - Confidence ≥ 7/10: Standard SOW without special warnings
+  - Confidence 5-6/10: Include transparency sections and best-effort markers
+  - Confidence < 5/10: Recommend escalation to human support
 - Verify recommendations are actionable and appropriate
 - Ensure responses address the original user question
 
