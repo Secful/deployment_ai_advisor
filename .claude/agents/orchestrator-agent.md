@@ -91,37 +91,31 @@ confidence_score: 1-10
 **Objective**: Generate initial deployment SOW
 
 1. **Request API Key**: Ask user for API key (required for all operations)
-2. **Gather Requirements**: Ask user for cloud provider and deployment context
-3. **Generate Recommendations**: Invoke `deployment-advisor` to create deployment plan
-4. **Create SOW**: Invoke `reporter` to generate initial deployment SOW markdown document
-5. **Deliver SOW**: Provide deployment SOW markdown document to customer
-6. **Store Session**: Save session data under `/sessions/{api_key}/{version}/`
-7. **Escalation Check**: If unable to generate recommendations or SOW, suggest escalation to support
+2. **Generate Recommendations**: Invoke `deployment-advisor` to create deployment plan (advisor gathers requirements as needed)
+3. **Create SOW**: Invoke `reporter` to generate initial deployment SOW markdown document (reporter handles session storage)
+4. **Deliver SOW**: Provide deployment SOW markdown document to customer
+5. **Escalation Check**: If unable to generate recommendations or SOW, suggest escalation to support
 
 ### Flow 2: Troubleshoot (nth run - SOW exists, error reported)
 **Trigger**: Command type "troubleshoot" or error reports
 **Objective**: Update SOW based on error resolution
 
 1. **Request API Key**: Ask user for API key (required for all operations)
-2. **Gather Context**: Ask user for error details and current situation
-3. **Error Analysis**: Invoke `error-handler` to analyze error and provide solutions
-4. **Update Recommendations**: Invoke `deployment-advisor` to revise deployment plan
-5. **Update SOW**: Invoke `reporter` to generate updated deployment SOW markdown document
-6. **Deliver SOW**: Provide updated deployment SOW markdown document to customer
-7. **Store Session**: Save updated session data with incremented version
-8. **Escalation Check**: If unable to resolve error or update SOW, suggest escalation to support
+2. **Error Analysis**: Invoke `error-handler` to analyze error and provide solutions (handler gathers error details as needed)
+3. **Update Recommendations**: Invoke `deployment-advisor` to revise deployment plan (advisor gathers context as needed)
+4. **Update SOW**: Invoke `reporter` to generate updated deployment SOW markdown document (reporter handles session storage)
+5. **Deliver SOW**: Provide updated deployment SOW markdown document to customer
+6. **Escalation Check**: If unable to resolve error or update SOW, suggest escalation to support
 
 ### Flow 3: Validate (SOW exists, compare to cloud assets)
 **Trigger**: Command type "validate" or validation requests
 **Objective**: Compare SOW against actual cloud status
 
 1. **Request API Key**: Ask user for API key (required for all operations)
-2. **Gather Context**: Ask user for validation scope and requirements
-3. **Comparison**: Invoke `validator` to compare SOW against actual cloud status
-4. **Generate Report**: Invoke `reporter` to generate validation diff report as markdown document
-5. **Deliver Report**: Provide validation diff report markdown document to customer
-6. **Store Results**: Save validation results in session data
-7. **Escalation Check**: If unable to validate deployment or generate report, suggest escalation to support
+2. **Comparison**: Invoke `validator` to compare SOW against actual cloud status (validator gathers validation scope as needed)
+3. **Generate Report**: Invoke `reporter` to generate validation diff report as markdown document (reporter handles session storage)
+4. **Deliver Report**: Provide validation diff report markdown document to customer
+5. **Escalation Check**: If unable to validate deployment or generate report, suggest escalation to support
 
 ## Error Handling and Retry Logic
 

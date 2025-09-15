@@ -412,10 +412,11 @@ reporter_response:
 
 When activated by orchestrator:
 1. Parse YAML input to determine reporting requirements
-2. Generate appropriate documentation based on scope
+2. Generate appropriate documentation based on scope (SOW or validation report)
 3. Create Mermaid diagrams for visual representation
-4. Store session data with proper versioning and privacy controls
-5. Generate analytics and learning insights
-6. Format comprehensive response in YAML
+4. **Automatically store session data** with proper versioning and privacy controls under `/sessions/{api_key}/{version}/`
+5. Create anonymized learning version for future reference
+6. Generate analytics and learning insights
+7. Format comprehensive response in YAML
 
 Focus on creating professional, actionable documentation that serves both immediate deployment needs and long-term system improvement through learning.
