@@ -16,8 +16,8 @@ AI assistant system for Salt Security customers to deploy, troubleshoot, and man
 ✅ **PRODUCTION READY** - Complete multi-agent orchestrator system with working Claude Code integration:
 
 1. **✅ MCP Data Layer**: Functional salt-api-mcp server with 2 working API tools (TypeScript 5.9.2 + Node.js 18+)
-2. **✅ Multi-Agent Orchestrator**: 7 working Claude Code subagents deployed in `.claude/agents/` with proper YAML frontmatter
-3. **✅ Claude Code Slash Commands**: 4 native CLI commands with autocompletion in `.claude/commands/advisor/`
+2. **✅ Multi-Agent Orchestrator**: 6 working Claude Code subagents deployed in `.claude/agents/` with proper YAML frontmatter
+3. **✅ Claude Code Slash Commands**: 3 native CLI commands with autocompletion in `.claude/commands/advisor/`
 4. **✅ Decision Flowcharts**: Complete AWS, Azure, GCP deployment decision trees in `specifications/flowcharts/`
 5. **✅ Session Management**: Complete specifications for versioning, storage, and anonymized learning
 6. **✅ Error Handling**: Comprehensive retry logic and escalation specifications with YAML status codes
@@ -38,9 +38,6 @@ The system implements native Claude Code CLI slash commands with autocompletion 
   - Arguments: `[validation_scope] [--validation-depth] [--focus-areas] [--report-format]`
   - Example: `/advisor:validate "deployment completeness" --validation-depth comprehensive`
 
-- **`/advisor:report`** - Generate deployment SOWs, session summaries, and implementation documentation
-  - Arguments: `[report_type] [--format] [--detail-level] [--include-diagrams] [--output-file]`
-  - Example: `/advisor:report "sow" --format markdown --include-diagrams`
 
 ### Technical Implementation
 - **Location**: `.claude/commands/advisor/*.md` files with YAML frontmatter
