@@ -9,3 +9,6 @@ Import all subagents for visibility and coordination:
 @.claude/agents/error-handler-agent.md
 @.claude/agents/validator-agent.md
 @.claude/agents/reporter-agent.md
+
+# Command Specifications (Documentation Reference)
+@specifications/advisor-commands.md
