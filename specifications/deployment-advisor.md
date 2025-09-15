@@ -49,7 +49,7 @@ deployment_advisor_request:
     services_mentioned: []
     user_expertise_level: "beginner" | "intermediate" | "expert" | null
   customer_context:
-    company_id: "anonymized-hash" | null
+    api_key: "anonymized-hash" | null
     architecture_data: {} | null
     existing_collectors: [] | null
   retry_count: 0

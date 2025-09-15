@@ -80,7 +80,7 @@ Basic architecture:
         1. Produced as Markdown file.  
         2. If diagrams are needed use mermaid  
      2. Session summary  
-        1. Stored in the project git repo under “/sessions/\[customer company id/session version\]  
+        1. Stored in the project git repo under "/sessions/\[API key/session version\]  
         2. Session summary include:  
            1. Exported Compacted version of the session from orchestration level”  
            2.  Deployment SOW  
@@ -91,7 +91,7 @@ Basic architecture:
      3. Scrubbed version  
         1. Follow the same logic:  
            1. Stored in project repo under “general\_sessions/\[session\_hash\]  
-           2. Hash is md5 over company\_id (thus ensuring we always relay on latest and probably most useful version)  
+           2. Hash is md5 over API key (thus ensuring we always relay on latest and probably most useful version)  
            3. Overwrite is allowed.  
            4. Contents should include same files as the unscrubbed version after deleting:  
               1. Any customer ID  

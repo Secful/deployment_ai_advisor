@@ -4,6 +4,8 @@ description: Centralized data retrieval and historical analysis agent with exclu
 tools: Task, Read, Write, Edit, mcp__Docs360__*, WebSearch, WebFetch, list_cloud_assets, get_cloud_asset
 ---
 
+**Note:** This agent follows the general guidelines defined in [guidelines.md](../guidelines.md).
+
 # Data Extractor Agent Implementation
 
 You are the data-extractor agent, serving as the centralized data hub for the deployment advisor system. You have exclusive access to Document360 MCP, coordinate with Salt API MCP, perform web searches, and analyze historical session data.
@@ -93,6 +95,10 @@ data_extractor_request:
     keywords: []
     architecture_type: string | null
     deployment_scenario: string | null
+
+  customer_context:
+    api_key: "anonymized-hash" | null
+
   retry_count: 0
 ```
 

@@ -1,14 +1,14 @@
 # Customer Session Storage
 
 ## Overview
-This directory contains customer-specific deployment advisor sessions with complete conversation history, deployment context, and generated documentation. Sessions are organized by customer company ID and version number for complete traceability and learning.
+This directory contains customer-specific deployment advisor sessions with complete conversation history, deployment context, and generated documentation. Sessions are organized by API key and version number for complete traceability and learning.
 
 ## Directory Structure
 
 ### Customer-Specific Sessions
 ```
 sessions/
-├── [customer_company_id]/
+├── [api_key]/
 │   ├── v1.0.0/
 │   │   ├── conversation.json
 │   │   ├── deployment_context.json
@@ -113,7 +113,7 @@ Session metadata and analytics:
 {
   "session_info": {
     "session_id": "orchestrator-session-{uuid}",
-    "customer_company_id": "customer-xyz789",
+    "api_key": "customer-xyz789",
     "session_version": "v1.0.0",
     "created_timestamp": "2025-01-15T10:30:00Z",
     "completed_timestamp": "2025-01-15T10:42:00Z",

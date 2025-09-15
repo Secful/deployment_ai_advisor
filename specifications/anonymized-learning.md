@@ -31,7 +31,7 @@ anonymization_principles:
 customer_id_anonymization:
   hashing_algorithm:
     method: "MD5 hash with salt"
-    input: "customer_company_id + system_salt"
+    input: "api_key + system_salt"
     output_format: "customer-{md5_hash_8_chars}"
     example:
       original: "customer-xyz789"

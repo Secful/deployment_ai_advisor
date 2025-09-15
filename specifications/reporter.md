@@ -237,7 +237,7 @@ template_system:
 ### Customer-Specific Session Storage
 ```yaml
 customer_session_structure:
-  storage_location: "/sessions/[customer_company_id]/[session_version]/"
+  storage_location: "/sessions/[api_key]/[session_version]/"
 
   session_files:
     conversation_transcript:
@@ -300,7 +300,7 @@ anonymization_process:
 
   anonymized_session_storage:
     storage_location: "/general_sessions/[session_hash]/"
-    session_hash: "MD5 hash of original customer_company_id"
+    session_hash: "MD5 hash of original api_key"
 
     anonymized_content:
       - generalized_architecture_patterns: "High-level architectural patterns"
