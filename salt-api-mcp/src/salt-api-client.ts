@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { z } from "zod";
+import * as YAML from "yaml";
 import dotenv from "dotenv";
 
 // Load environment variables
@@ -49,7 +50,113 @@ const CloudAssetsListResponseSchema = z.object({
 });
 
 export type CloudAsset = z.infer<typeof CloudAssetSchema>;
-export type CloudAssetsListResponse = z.infer<typeof CloudAssetsListResponseSchema>;
+export type CloudAssetsListResponse = z.infer<typeof CloudAssetsListResponseSchema> & {
+  yaml?: string;
+};
+
+export type CloudAssetWithYAML = CloudAsset & {
+  yaml?: string;
+  transformed?: any;
+};
+
+// Utility functions for data transformation
+function simplifyProvider(provider?: string): string | undefined {
+  if (!provider) return undefined;
+  
+  if (provider.includes('AWS') || provider.toLowerCase().includes('aws')) {
+    return 'AWS';
+  } else if (provider.includes('Azure') || provider.toLowerCase().includes('azure')) {
+    return 'Azure';
+  } else if (provider.includes('GCP') || provider.toLowerCase().includes('google')) {
+    return 'GCP';
+  }
+  
+  return provider;
+}
+
+function simplifyResourceType(resourceType?: string): string | undefined {
+  if (!resourceType) return undefined;
+  
+  // Remove provider prefix (e.g., "AWS-APIGateway-Http" -> "APIGateway-Http")
+  return resourceType.replace(/^(AWS|Azure|GCP)-/, '');
+}
+
+function removeEmptyFields(obj: any): any {
+  const cleaned: any = {};
+  
+  for (const [key, value] of Object.entries(obj)) {
+    // Skip empty, null, undefined, or "N/A" values
+    if (value !== null && 
+        value !== undefined && 
+        value !== '' && 
+        value !== 'N/A' && 
+        value !== 'unknown' &&
+        !(Array.isArray(value) && value.length === 0)) {
+      cleaned[key] = value;
+    }
+  }
+  
+  return cleaned;
+}
+
+function transformAssetForOutput(asset: CloudAsset): any {
+  return removeEmptyFields({
+    id: asset.id,
+    name: asset.resourceName || asset.name,
+    type: simplifyResourceType(asset.resourceType || asset.type),
+    region: asset.region,
+    status: asset.collectStatus || asset.status,
+    endpoints: asset.endpoints,
+    account_id: asset.cloudAccountId || asset.accountId,
+    cloud_id: asset.cloudId,
+    first_discovered: asset.firstDiscovered,
+    link: asset.link
+  });
+}
+
+function formatAssetsAsYAML(assets: CloudAsset[]): string {
+  // Group assets by provider
+  const groupedAssets: Record<string, any[]> = {};
+  const providerCounts: Record<string, number> = {};
+  
+  for (const asset of assets) {
+    const provider = simplifyProvider(asset.provider) || 'Unknown';
+    const transformedAsset = transformAssetForOutput(asset);
+    
+    if (!groupedAssets[provider]) {
+      groupedAssets[provider] = [];
+      providerCounts[provider] = 0;
+    }
+    
+    groupedAssets[provider].push(transformedAsset);
+    providerCounts[provider]++;
+  }
+  
+  // Create summary
+  const summary = {
+    total_assets: assets.length,
+    ...Object.fromEntries(
+      Object.entries(providerCounts).map(([provider, count]) => 
+        [`${provider.toLowerCase()}_count`, count]
+      )
+    )
+  };
+  
+  // Create final structure
+  const result: any = { summary };
+  
+  // Add grouped assets with provider-specific keys
+  for (const [provider, providerAssets] of Object.entries(groupedAssets)) {
+    const key = `${provider.toLowerCase()}_assets`;
+    result[key] = providerAssets;
+  }
+  
+  return YAML.stringify(result, { 
+    indent: 2,
+    lineWidth: 120,
+    minContentWidth: 0
+  });
+}
 
 export class SaltApiClient {
   private client: AxiosInstance;
@@ -130,17 +237,21 @@ export class SaltApiClient {
       // Validate response structure
       const validatedData = CloudAssetsListResponseSchema.parse(response.data);
       
-      // Normalize response to consistent format
-      const normalizedResponse: CloudAssetsListResponse = {
-        records: validatedData.records || validatedData.data || [],
-        data: validatedData.records || validatedData.data || [],
+      // Get the assets array (prefer records over data)
+      const assets = validatedData.records || validatedData.data || [];
+      
+      // Return YAML formatted response with improved structure
+      const yamlOutput = formatAssetsAsYAML(assets);
+      
+      return {
+        data: assets, // Keep for backward compatibility
+        records: assets, // Keep for backward compatibility  
+        yaml: yamlOutput, // New YAML formatted output
         total: validatedData.total,
         limit: validatedData.limit,
         offset: validatedData.offset,
         has_more: validatedData.has_more
       };
-      
-      return normalizedResponse;
     } catch (error) {
       if (error instanceof z.ZodError) {
         throw new Error(`Invalid API response format: ${error.message}`);
@@ -154,7 +265,7 @@ export class SaltApiClient {
    * @param id The unique identifier of the cloud asset
    * @returns Promise<CloudAsset>
    */
-  async getCloudAsset(id: string): Promise<CloudAsset> {
+  async getCloudAsset(id: string): Promise<CloudAssetWithYAML> {
     if (!this.bearerToken) {
       throw new Error(
         "Salt Security Bearer token not configured. Please set SALT_BEARER_TOKEN environment variable."
@@ -170,7 +281,20 @@ export class SaltApiClient {
 
       // Validate response structure
       const validatedData = CloudAssetSchema.parse(response.data);
-      return validatedData;
+      
+      // Transform and format as YAML
+      const transformedAsset = transformAssetForOutput(validatedData);
+      const yamlOutput = YAML.stringify(transformedAsset, { 
+        indent: 2,
+        lineWidth: 120,
+        minContentWidth: 0
+      });
+      
+      return {
+        ...validatedData, // Keep original data for backward compatibility
+        yaml: yamlOutput, // New YAML formatted output
+        transformed: transformedAsset // Simplified data structure
+      };
     } catch (error) {
       if (error instanceof z.ZodError) {
         throw new Error(`Invalid API response format: ${error.message}`);
