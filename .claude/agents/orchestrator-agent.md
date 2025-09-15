@@ -67,6 +67,7 @@ error_resolution_context:  # Include when calling deployment-advisor after error
   solution_recommendations: {} | null
   root_cause: string | null
   affected_components: [] | null
+  cloud_provider: "aws" | "azure" | "gcp" | null  # From error-handler analysis
 customer_context:
   api_key: "anonymized-hash" | null
   architecture_data: {} | null
@@ -109,8 +110,8 @@ confidence_score: 1-10
 
 1. **Request API Key**: Ask user for API key (required for all operations)
 2. **Error Analysis**: Invoke `error-handler` to analyze error and provide solutions (handler gathers error details as needed)
-3. **Capture Error Resolution**: Process error-handler YAML response and extract solution recommendations, root cause analysis, remediation steps, and confidence_score
-4. **Update Recommendations**: Invoke `deployment-advisor` with error analysis results to revise deployment plan incorporating error resolution
+3. **Capture Error Resolution**: Process error-handler YAML response and extract solution recommendations, root cause analysis, remediation steps, cloud_provider, and confidence_score
+4. **Update Recommendations**: Invoke `deployment-advisor` with error analysis results including cloud_provider to revise deployment plan incorporating error resolution
 5. **Process Aggregated Confidence**: Calculate overall confidence from error-handler (step 3) and deployment-advisor (step 4) scores using minimum confidence approach
 6. **Update SOW**: Invoke `reporter` with aggregated confidence data and error resolution context to generate updated deployment SOW markdown document including error remediation (reporter handles session storage)
 7. **Apply Graceful Degradation**: If aggregated confidence < 7/10, ensure updated SOW includes transparency sections and best-effort warnings

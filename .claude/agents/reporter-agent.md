@@ -274,10 +274,34 @@ reporter_response:
 ## Architecture Overview
 [Mermaid Architecture Diagram]
 
-### Components
-- **Primary Service**: [API Gateway/Load Balancer/etc.]
+### Customer Architecture Analysis
+**Current Infrastructure**:
+- **Cloud Provider**: [AWS/Azure/GCP]
+- **Primary Services**: [API Gateway/Load Balancer/etc.]
 - **Monitoring**: [CloudWatch/Application Insights/Operations Suite]
-- **Salt Collector**: [Configuration and deployment details]
+- **CA Certificates**: [Certificate status and management]
+- **Salt Hybrid Version**: [Current version and compatibility]
+- **Network Configuration**: [VPC, security groups, routing]
+
+**Prerequisites Assessment**:
+- **Requirements Met**: [✅/❌] [List of met requirements]
+- **Gaps Identified**: [List of gaps that need to be addressed]
+- **Deployment Status**: [Current collector deployment and traffic collection status]
+
+### Recommended Components
+- **Salt Collector**: [Specific collector type and configuration]
+- **Integration Points**: [How collector integrates with customer architecture]
+- **Architecture Fit**: [Why this approach fits customer's specific architecture]
+
+## Deployment Options Analysis
+*Include this section when multiple deployment options are available*
+
+| Option | Complexity | Time | Success Rate | Architecture Fit | Pros | Cons |
+|--------|------------|------|--------------|------------------|------|------|
+| [Option 1] | [1-10] | [X hours] | [XX%] | [Fit description] | [Pros list] | [Cons list] |
+| [Option 2] | [1-10] | [X hours] | [XX%] | [Fit description] | [Pros list] | [Cons list] |
+
+**Recommended Option**: [Selected option] based on [rationale]
 
 ## Implementation Plan
 
@@ -286,6 +310,7 @@ reporter_response:
    - [ ] Required IAM/RBAC permissions
    - [ ] Network connectivity requirements
    - [ ] Salt Security collector access
+   - [ ] Address identified architecture gaps
 
 2. **Tool Setup**
    - [ ] AWS/Azure/GCP CLI configuration

@@ -51,6 +51,8 @@ The **Salt Security Cloud Assets API MCP Server** (`salt-api-mcp`) is your prima
 - **Real-time cloud infrastructure inventory**: Live data about customer's actual deployed resources
 - **Multi-cloud asset discovery**: Assets across AWS, Azure, GCP with unified format
 - **Deployment-relevant metadata**: API gateways, load balancers, functions, monitoring services
+- **Architecture details**: CA certificates, Salt Hybrid versions, network configurations, security settings
+- **Deployment status**: Current collector deployment status and traffic collection state
 - **Architecture pattern recognition**: Components and relationships for deployment planning
 - **Secure access**: Bearer token authenticated access to customer-specific data
 
@@ -118,10 +120,30 @@ data_extractor_response:
         api_gateways: []
         load_balancers: []
         monitoring_services: []
+      architecture_details:
+        ca_certificates:
+          - certificate_name: "string"
+            status: "valid" | "expired" | "expiring_soon"
+            expiry_date: "date"
+            issuer: "string"
+        salt_hybrid_versions:
+          current_version: "string" | null
+          compatible_versions: []
+          upgrade_required: boolean
+        network_configuration:
+          vpc_details: {}
+          security_groups: []
+          routing_configuration: {}
+        deployment_status:
+          collectors_deployed: []
+          traffic_collection_active: boolean
+          last_collection_timestamp: "datetime" | null
       architecture_patterns:
         - pattern_type: "aws-api-gateway-standard"
           components: ["API Gateway", "CloudWatch", "Lambda"]
           complexity_score: 5
+          prerequisites_met: boolean
+          gaps_identified: []
       asset_count_by_type:
         api_gateways: number
         load_balancers: number
@@ -189,11 +211,17 @@ data_extractor_response:
 ## Data Processing Workflows
 
 ### 1. Cloud Asset Analysis Workflow
-1. Use `list_cloud_assets` with appropriate limit/offset parameters to retrieve customer cloud assets
-2. Use `get_cloud_asset` for detailed information on specific assets of interest
-3. Process asset data to identify deployment-relevant patterns
-4. Categorize assets by type (API Gateway, Load Balancer, Functions, etc.)
-5. Generate architecture summary with complexity scoring
+1. **Comprehensive Asset Retrieval**: Use `list_cloud_assets` with appropriate limit/offset parameters to retrieve complete customer cloud assets inventory
+2. **Detailed Asset Analysis**: Use `get_cloud_asset` for detailed information on specific assets including:
+   - CA certificates and certificate status
+   - Salt Hybrid versions and compatibility
+   - Network configuration and security settings
+   - Current deployment status and traffic collection state
+3. **Architecture Pattern Recognition**: Process asset data to identify deployment-relevant patterns and component relationships
+4. **Prerequisites Assessment**: Compare current architecture against Salt Security knowledge base requirements
+5. **Deployment Status Analysis**: Assess current collector deployment status and traffic collection activity
+6. **Architecture Categorization**: Categorize assets by type (API Gateway, Load Balancer, Functions, etc.) with architecture context
+7. **Comprehensive Architecture Summary**: Generate complete architecture analysis including complexity scoring, prerequisites gaps, and deployment readiness
 
 ### 2. Documentation Retrieval Workflow
 1. Use mcp__Docs360__document360-drive-search-files-and-folders for keyword search
