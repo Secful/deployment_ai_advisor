@@ -9,7 +9,6 @@ This directory contains specifications for the `/advisor:` command family that p
 - **[/advisor:advise](advisor-advise.md)** - Deployment guidance workflow with natural language query processing
 - **[/advisor:troubleshoot](advisor-troubleshoot.md)** - Error analysis and resolution guidance with architecture-aware solutions
 - **[/advisor:validate](advisor-validate.md)** - Deployment status verification with SOW comparison and gap analysis
-- **[/advisor:report](advisor-report.md)** - SOW generation and session documentation with Mermaid diagrams
 
 ## Command Architecture
 

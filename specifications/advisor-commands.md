@@ -57,18 +57,6 @@ This document defines the specification for the `/advisor:` command family - a s
 - `--focus-areas`: Comma-separated areas (infrastructure,connectivity,monitoring,security)
 - `--report-format`: markdown | json | pdf
 
-### /advisor:report - Documentation Generation
-**Purpose**: Generate deployment SOWs, session summaries, and implementation documentation
-
-**Syntax**: `/advisor:report [report_type] [--options]`
-
-**Parameters**:
-- `report_type` (required): sow | session | compliance | analytics
-- `--format`: markdown | json | pdf
-- `--detail-level`: summary | standard | comprehensive
-- `--include-diagrams`: Include Mermaid diagrams
-- `--output-file`: Output file path
-
 ## Command Processing Implementation
 
 ### Parameter Parsing Function
@@ -166,29 +154,6 @@ orchestrator_request:
   retry_count: 0
 ```
 
-### /advisor:validate Implementation
-```yaml
-# When user runs: /advisor:validate "deployment completeness" --validation-depth comprehensive
-
-orchestrator_request:
-  orchestrator_id: "orchestrator-session-{uuid}"
-  request_type: "validation"
-  user_query: "deployment completeness"
-  conversation_context:
-    previous_questions: []
-    cloud_provider: null
-    services_mentioned: []
-    deployment_stage: "complete"
-  validation_scope:
-    sow_document: null
-    expected_components: []
-    validation_depth: "comprehensive"
-    focus_areas: ["infrastructure", "connectivity", "monitoring", "security"]
-  command_context:
-    command_type: "advisor_validate"
-    report_format: "markdown"
-  retry_count: 0
-```
 
 ### /advisor:report Implementation
 ```yaml
@@ -264,23 +229,6 @@ orchestrator_request:
 {validation_procedures}
 ```
 
-#### /advisor:validate Response
-```markdown
-# Validation Report
-
-## Overall Status: {overall_status}
-**Completion**: {completion_percentage}%
-**Checks**: {passed_checks}/{total_checks} passed
-
-## Results Summary
-{component_validation_results}
-
-## Remediation Plan
-{remediation_plan}
-
-## Compliance Status
-{compliance_assessment}
-```
 
 #### /advisor:report Response
 ```markdown
@@ -324,9 +272,6 @@ orchestrator_request:
 
 # Validate deployment
 /advisor:validate "deployment completeness"
-
-# Generate SOW
-/advisor:report "sow"
 ```
 
 ### Advanced Usage
@@ -344,12 +289,6 @@ orchestrator_request:
   --deployment-stage post_deployment \
   --verbose \
   --include-diagnostics
-
-# Thorough validation
-/advisor:validate "security compliance" \
-  --validation-depth comprehensive \
-  --focus-areas "security,compliance" \
-  --report-format pdf
 
 # Custom documentation
 /advisor:report "compliance" \

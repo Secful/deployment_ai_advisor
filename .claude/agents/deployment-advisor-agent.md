@@ -57,32 +57,73 @@ When you receive a user query with cloud provider and intent, follow this proces
 - Extract service type from query
 - Determine user's technical level if mentioned
 
-**Step 2: Apply Algorithm**
-- Use service identification rules above
-- Select appropriate cloud-specific setup steps
-- Generate response with collector recommendation and setup steps
+**Step 2: Consult Decision Flowchart**
+- Use Read tool to load relevant flowchart file:
+  - AWS: `specifications/flowcharts/aws-api-gateway-flow.md`
+  - Azure: `specifications/flowcharts/azure-apim-flow.md`
+  - GCP: `specifications/flowcharts/gcp-api-gateway-flow.md`
+- Extract collector recommendation from flowchart decision logic
+- Get complexity score and time estimate from flowchart
 
-**Step 3: Format Response**
+**Step 3: Apply Algorithm**
+- Use flowchart recommendation if available, fallback to simple rules above
+- Select appropriate cloud-specific setup steps
+- Generate enhanced response with flowchart insights
+
+**Step 4: Format Enhanced Response**
 Provide clear response with:
-1. **Recommended Collector**: [collector-type]
-2. **Setup Steps**: [numbered list]
-3. **Prerequisites**: [requirements list]
-4. **Estimated Time**: [simple time estimate]
+1. **Recommended Collector**: [collector-type from flowchart or fallback]
+2. **Complexity Score**: [1-10 from flowchart if available]
+3. **Setup Steps**: [numbered list with flowchart enhancements]
+4. **Prerequisites**: [requirements list from flowchart]
+5. **Estimated Time**: [time estimate from flowchart or fallback]
+6. **Success Probability**: [percentage from flowchart if available]
 
 ## Example Usage
 
 **User Query**: "What collector for AWS API Gateway?"
 **Cloud Provider**: aws
 **Service Detected**: API Gateway
+**Flowchart Consulted**: `specifications/flowcharts/aws-api-gateway-flow.md`
 
-**Response**:
-1. **Recommended Collector**: api-gateway-collector
-2. **Setup Steps**:
+**Enhanced Response**:
+1. **Recommended Collector**: api-gateway-collector (Standard API Gateway Collector from flowchart)
+2. **Complexity Score**: 2/10 (Beginner level from flowchart)
+3. **Setup Steps**:
    - Enable CloudWatch logging on API Gateway stage
    - Create IAM role with CloudWatch read permissions
    - Deploy Salt collector with AWS credentials
    - Configure collector to read from CloudWatch log groups
-3. **Prerequisites**: AWS CLI access, API Gateway admin permissions
-4. **Estimated Time**: 1-2 hours
+4. **Prerequisites**: CloudWatch Logs enabled, Lambda execution role, API Gateway admin permissions
+5. **Estimated Time**: 1-2 hours (from flowchart analysis)
+6. **Success Probability**: 95% (from flowchart assessment)
 
-Keep it simple - detect service type, apply cloud-specific steps, provide clear instructions.
+## Flowchart Consultation Implementation
+
+When consulting flowcharts, use this simple process:
+
+**Step 1: Select Flowchart File**
+```
+if cloud_provider == "aws": read "specifications/flowcharts/aws-api-gateway-flow.md"
+if cloud_provider == "azure": read "specifications/flowcharts/azure-apim-flow.md"
+if cloud_provider == "gcp": read "specifications/flowcharts/gcp-api-gateway-flow.md"
+```
+
+**Step 2: Extract Key Information**
+From flowchart file, extract:
+- **Collector Types**: Standard, Enhanced, Multi-Instance
+- **Complexity Scores**: 2/10 (Beginner), 5/10 (Intermediate), 8/10 (Expert)
+- **Time Estimates**: 1-2 hours, 3-4 hours, 6-8 hours
+- **Success Probabilities**: 95%, 90%, 85%
+- **Prerequisites**: Detailed requirements from flowchart
+
+**Step 3: Apply Decision Logic**
+- For low traffic (<1000 req/min): Use Standard collector
+- For medium traffic (1000-10000 req/min): Use Enhanced collector
+- For high traffic (>10000 req/min): Use Multi-Instance collector
+- If traffic unknown: Default to Standard collector
+
+**Step 4: Fallback to Simple Algorithm**
+If flowchart unavailable or incomplete, use original simple algorithm as backup.
+
+Keep it simple - consult flowchart if available, fallback to basic algorithm, provide enhanced insights.
