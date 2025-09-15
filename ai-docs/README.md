@@ -14,12 +14,16 @@ AI assistant system for Salt Security customers to deploy, troubleshoot, and man
 - **End-to-End Workflows**: Complete deployment, troubleshooting, validation, and reporting workflows
 
 ## Key Features Implemented
-- **✅ Deployment Guidance**: Simple collector selection algorithm with cloud-specific setup steps
-- **✅ Error Troubleshooting**: Pattern matching database with working solution commands
-- **✅ Cloud Asset Analysis**: MCP integration with complexity scoring and architecture analysis
-- **✅ SOW Generation**: Template engine that creates professional deployment documentation
-- **✅ Deployment Validation**: Component checking with connectivity tests and compliance reporting
-- **✅ Session Storage**: File-based persistence with JSON metadata and versioning
+- **✅ Deployment Guidance**: Enhanced collector selection with flowchart consultation and complexity scoring
+- **✅ Error Troubleshooting**: Pattern matching database with working solution commands and comprehensive retry logic
+- **✅ Cloud Asset Analysis**: MCP integration with circuit breaker pattern and complexity scoring
+- **✅ SOW Generation**: Template engine with anonymized learning and session storage
+- **✅ Deployment Validation**: Component checking with connectivity tests and comprehensive reporting
+- **✅ Session Storage**: Complete anonymized learning system with privacy-compliant data collection
+- **✅ Flowchart Integration**: Decision trees consulted via Read tool for enhanced recommendations
+- **✅ Robust Error Handling**: YAML status codes, retry logic, escalation, and graceful degradation
+- **✅ Knowledge Gap Detection**: Real-time gap identification with reporting and improvement recommendations
+- **✅ UUID Anonymization**: Multi-layer anonymization with resource name sanitization
 
 ## Current Status
 🟢 **FULLY FUNCTIONAL** - All agents transformed from bloated specifications to working implementations:
@@ -42,9 +46,15 @@ All commands now delegate to working agents:
 ### What Actually Happens
 1. User runs command (e.g., `/advisor:advise "AWS help"`)
 2. Command file invokes Task tool to call orchestrator agent
-3. Orchestrator uses keyword detection to route to appropriate sub-agent
+3. **✅ Enhanced Orchestrator Processing**:
+   - Intent recognition with keyword-based classification
+   - Cloud provider detection (AWS/Azure/GCP)
+   - Multi-agent coordination when needed
+   - Response synthesis for complex queries
+   - Real-time satisfaction monitoring
+   - Error recovery with classification-based retry
 4. Sub-agent applies working business logic (collector selection, error matching, etc.)
-5. **Result**: Practical deployment advice, working error solutions, actionable validation reports
+5. **Result**: Comprehensive, synthesized guidance with adaptive responses based on user satisfaction
 
 ## Technology Stack
 

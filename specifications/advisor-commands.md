@@ -68,7 +68,7 @@ def parse_advisor_command(command_string):
     if len(parts) < 2:
         return {"error": "Invalid command format"}
 
-    command_type = parts[0].replace("/advisor:", "")  # advise, troubleshoot, validate, report
+    command_type = parts[0].replace("/advisor:", "")  # advise, troubleshoot, validate
 
     # Extract main query/argument
     query_parts = []
@@ -155,34 +155,6 @@ orchestrator_request:
 ```
 
 
-### /advisor:report Implementation
-```yaml
-# When user runs: /advisor:report "sow" --format markdown --include-diagrams
-
-orchestrator_request:
-  orchestrator_id: "orchestrator-session-{uuid}"
-  request_type: "reporting"
-  user_query: "Generate SOW document"
-  conversation_context:
-    previous_questions: []
-    cloud_provider: null
-    services_mentioned: []
-    session_duration: null
-  reporting_scope:
-    sow_generation: true
-    session_documentation: false
-    deployment_analysis: false
-    compliance_reporting: false
-  output_preferences:
-    format: "markdown"
-    detail_level: "standard"
-    include_diagrams: true
-    anonymize_data: false
-  command_context:
-    command_type: "advisor_report"
-    output_file: null
-  retry_count: 0
-```
 
 ## Response Formatting
 
@@ -230,18 +202,6 @@ orchestrator_request:
 ```
 
 
-#### /advisor:report Response
-```markdown
-# Generated Documentation
-
-## Document Type: {report_type}
-**Format**: {format}
-**Generated**: {timestamp}
-
-{generated_content}
-
-**Saved to**: {output_file}
-```
 
 ## Error Handling
 
@@ -290,12 +250,6 @@ orchestrator_request:
   --verbose \
   --include-diagnostics
 
-# Custom documentation
-/advisor:report "compliance" \
-  --format markdown \
-  --detail-level comprehensive \
-  --include-diagrams \
-  --output-file "./compliance-report.md"
 ```
 
 ## Integration Instructions

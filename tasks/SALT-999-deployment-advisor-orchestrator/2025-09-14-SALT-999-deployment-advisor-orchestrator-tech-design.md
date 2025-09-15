@@ -96,7 +96,6 @@ agents/
 ├── data-extractor.md              # MCP integration & historical analysis
 ├── error-handler.md               # Troubleshooting agent
 ├── validator.md                   # Deployment verification agent
-├── reporter.md                    # SOW generation & session storage
 ├── flowcharts/                    # Deployment decision trees
 │   ├── aws-api-gateway-flow.md
 │   ├── azure-apim-flow.md
@@ -104,8 +103,7 @@ agents/
 └── commands/                      # Command definitions
     ├── advisor-advise.md
     ├── advisor-troubleshoot.md
-    ├── advisor-validate.md
-    └── advisor-report.md
+    └── advisor-validate.md
 ```
 
 ### Sequence Diagrams
@@ -141,11 +139,6 @@ sequenceDiagram
     DeploymentAdvisor->>DeploymentAdvisor: Generate recommendations with priorities
     DeploymentAdvisor-->>Orchestrator: YAML: deployment_recommendation
 
-    Orchestrator->>TaskTool: Task(agent="reporter", request="generate-sow")
-    TaskTool->>Reporter: Create deployment SOW
-    Reporter->>Reporter: Generate Markdown with Mermaid diagrams
-    Reporter->>GitStorage: Write session to /sessions/[company_id]/[version]/
-    Reporter-->>Orchestrator: YAML: sow_document + session_summary
 
     Orchestrator->>Orchestrator: Synthesize customer-friendly response
     Orchestrator-->>Customer: "Based on your AWS API Gateway setup, recommend..."
@@ -409,12 +402,6 @@ mcp_services:
 - **Processing:** Routes to validator agent for SOW comparison
 - **Response:** Validation results with missing components identified
 
-#### /advisor:report
-- **Type:** Case-insensitive command
-- **Description:** Generate deployment SOW document
-- **Usage:** `/advisor:report`
-- **Processing:** Routes to reporter agent for document generation
-- **Response:** Formatted Markdown SOW with Mermaid diagrams
 
 ### Agent Communication API
 
@@ -425,7 +412,7 @@ task_request:
   description: "Human-readable task description"
   prompt: "Detailed context and requirements"
   subagent_type: "deployment-advisor" | "data-extractor" | "error-handler" |
-                 "validator" | "reporter"
+                 "validator"
 
 # Response handling
 task_response:

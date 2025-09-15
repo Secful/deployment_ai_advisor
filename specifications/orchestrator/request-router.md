@@ -122,7 +122,6 @@ reporting_indicators:
     - "Document my setup"
     - "Generate deployment summary"
   commands:
-    - "/advisor:report"
     - "/report"
 ```
 
@@ -254,9 +253,6 @@ command_patterns:
     "/advisor:validate":
       intent: "validation"
       subagent: "validator"
-    "/advisor:report":
-      intent: "reporting"
-      subagent: "reporter"
 
   case_insensitive: true
   prefix_variations: ["/advisor:", "/Advisor:", "/ADVISOR:"]

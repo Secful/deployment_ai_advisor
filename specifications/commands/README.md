@@ -106,16 +106,6 @@ Each command integrates with the orchestrator agent by:
 - Gap analysis with remediation plans
 - Comprehensive validation reporting
 
-### /advisor:report - Documentation Generation
-**Purpose**: Generate deployment SOWs, session summaries, and implementation documentation
-
-**Workflow**: Report Request → Reporter → Template Selection → Content Generation → Document Formatting
-
-**Key Features**:
-- Comprehensive SOW generation with Mermaid diagrams
-- Session documentation and learning capture
-- Multiple output formats and templates
-- Executive and technical audience customization
 
 ## Error Handling Strategy
 
@@ -154,7 +144,6 @@ performance_targets:
   advisor_advise: "< 30 seconds (standard), < 45 seconds (comprehensive)"
   advisor_troubleshoot: "< 20 seconds (standard), < 35 seconds (verbose)"
   advisor_validate: "< 45 seconds (standard), < 90 seconds (comprehensive)"
-  advisor_report: "< 30 seconds (standard), < 60 seconds (comprehensive)"
 ```
 
 ### Optimization Strategies
@@ -176,8 +165,6 @@ performance_targets:
 # Validate deployment
 /advisor:validate "deployment completeness"
 
-# Generate SOW
-/advisor:report "deployment SOW"
 ```
 
 ### Advanced Usage
@@ -199,11 +186,6 @@ performance_targets:
   --validation-depth comprehensive \
   --export-report
 
-# Executive SOW with custom template
-/advisor:report "deployment SOW" \
-  --template enterprise \
-  --export-format executive \
-  --output-file ./executive-sow.pdf
 ```
 
 ## Integration Testing
