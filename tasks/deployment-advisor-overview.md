@@ -19,8 +19,8 @@ AI-powered assistant that helps Salt Security customers deploy, troubleshoot, an
 - [SALT-999-deployment-advisor-orchestrator/2025-09-14-SALT-999-deployment-advisor-orchestrator-tech-design.md](SALT-999-deployment-advisor-orchestrator/2025-09-14-SALT-999-deployment-advisor-orchestrator-tech-design.md)
 - [SALT-999-deployment-advisor-orchestrator/2025-09-14-SALT-999-deployment-advisor-orchestrator-tasks.md](SALT-999-deployment-advisor-orchestrator/2025-09-14-SALT-999-deployment-advisor-orchestrator-tasks.md)
 - Status: ✅ **IMPLEMENTATION COMPLETE** - All 55 tasks implemented and deployed as working Claude Code system
-- ✅ Multi-Agent Orchestrator System - 7 working Claude Code subagents in `.claude/agents/` with proper YAML frontmatter
-- ✅ Specialized Sub-Agents - orchestrator, deployment-advisor, data-extractor, error-handler, validator, reporter, advisor-commands
+- ✅ Multi-Agent Orchestrator System - 6 working Claude Code subagents in `.claude/agents/` with proper YAML frontmatter
+- ✅ Specialized Sub-Agents - orchestrator, deployment-advisor, data-extractor, error-handler, validator, reporter
 - ✅ Cloud Decision Flowcharts - Complete AWS, Azure, GCP deployment decision trees in `specifications/flowcharts/`
 - ✅ /advisor: Commands - 4 working native CLI commands with autocompletion in `.claude/commands/advisor/`
 - ✅ Session Storage System - Complete specifications for versioning, anonymized learning, and historical analysis

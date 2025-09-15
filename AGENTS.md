@@ -29,17 +29,16 @@ This file provides vendor-agnostic context for AI coding assistants based on the
 - **✅ Error Handling**: Full specifications implemented (retry logic, circuit breakers, escalation, graceful degradation)
 
 ## 🎯 Agent System Components
-- **`.claude/agents/`**: 7 working Claude Code subagents with auto-discovery and YAML frontmatter
+- **`.claude/agents/`**: 6 working Claude Code subagents with auto-discovery and YAML frontmatter
   - **✅ orchestrator-agent.md**: Central coordinator with natural language processing and sub-agent coordination
   - **✅ deployment-advisor-agent.md**: SME agent with flowchart consultation and architecture analysis
   - **✅ data-extractor-agent.md**: MCP integration with Document360 access and historical analysis
   - **✅ error-handler-agent.md**: Troubleshooting specialist with pattern matching and architecture-specific solutions
   - **✅ validator-agent.md**: Deployment verification with SOW comparison and gap analysis
   - **✅ reporter-agent.md**: SOW generation with Mermaid diagrams and session storage management
-  - **✅ advisor-commands.md**: Command handler for structured `/advisor:` command processing
 - **`.claude/commands/advisor/`**: 4 native CLI slash commands with autocompletion
 - **`specifications/`**: Complete system specifications and design documents from 55-task implementation
 
 ---
 
-*This documentation reflects the CURRENT PRODUCTION-READY implementation with 7 working Claude Code subagents, 4 native CLI commands, and complete MCP data layer integration.*
+*This documentation reflects the CURRENT PRODUCTION-READY implementation with 6 working Claude Code subagents, 4 native CLI commands, and complete MCP data layer integration.*
