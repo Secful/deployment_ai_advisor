@@ -342,17 +342,30 @@ When you need comprehensive error analysis and alternative solutions:
    - Documentation for alternative collector options that avoid the error
    - Similar error patterns from anonymized historical data
    ```
-2. **Error Context Analysis Process**:
+2. **Access Historical Error Resolution Data** using Bash tool for error patterns and solution success rates:
+   ```bash
+   # Customer-specific error resolution history
+   find /sessions/{api_key}/ -name "*error*" -type f | head -10
+   grep -r "error_classification" /sessions/{api_key}/
+   cat /sessions/{api_key}/latest/error_resolution_history.json
+
+   # Anonymized error patterns for similar issues
+   find /learning-sessions/ -name "error_patterns.json" | grep {error_hash}
+   cat /learning-sessions/{pattern_hash}/resolution_success_metrics.json
+   grep -r "{error_classification}" /learning-sessions/ --include="*.json"
+   ```
+3. **Error Context Analysis Process**:
    - Process cloud assets data to understand the failed deployment architecture
    - Compare error symptoms against Salt Security knowledge base patterns
+   - Analyze historical error resolution success rates for similar error types
    - Identify architectural factors that contributed to the error
-   - Assess alternative deployment approaches that avoid the error condition
-3. **Alternative Solution Generation**:
-   - If multiple viable alternative approaches exist, create options comparison table
-   - Include pros/cons analysis for each alternative approach
-   - Provide architecture fit assessment and error avoidance validation for each option
-4. If data is incomplete, set status to "partial" and list knowledge_gaps with error-specific focus
-5. Always provide architecture-based error resolution with clear rationale for alternative approaches
+   - Assess alternative deployment approaches that avoid the error condition based on historical success
+4. **Alternative Solution Generation**:
+   - If multiple viable alternative approaches exist, create options comparison table with historical resolution success rates
+   - Include pros/cons analysis for each alternative approach with lessons learned from previous error resolutions
+   - Provide architecture fit assessment and error avoidance validation based on similar successful resolutions
+5. If data is incomplete, set status to "partial" and list knowledge_gaps with error-specific focus
+6. Always provide architecture-based error resolution with clear rationale supported by historical error resolution evidence
 
 ## Quality Assurance
 

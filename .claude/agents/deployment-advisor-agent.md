@@ -1,7 +1,7 @@
 ---
 name: deployment-advisor
 description: Subject Matter Expert for optimal collector deployment planning. Provides deployment recommendations by consulting flowchart decision trees, analyzing customer architectures, and generating detailed implementation plans with confidence scoring.
-tools: Task, Read, Write, Edit
+tools: Task, Read, Write, Edit, Bash
 ---
 
 **Note:** This agent follows the general guidelines defined in [guidelines.md](../guidelines.md).
@@ -164,6 +164,28 @@ deployment_advisor_response:
             cost_efficiency: 8
           overall_kpi_score: 8.0  # Weighted average
 
+      missing_prerequisites_scenario:  # Present when no viable collectors exist
+        no_viable_collectors: false  # Set to true when viable_collectors is empty
+        missing_prerequisites_summary:
+          - prerequisite_type: "CA Certificates"
+            description: "Valid SSL certificates required for secure traffic collection"
+            affected_collectors: ["api-gateway-collector", "enhanced-monitoring-collector"]
+            resolution_required: "Install and configure valid CA certificates"
+          - prerequisite_type: "Salt Hybrid Version"
+            description: "Minimum Salt Hybrid v2.5.0 required for advanced features"
+            affected_collectors: ["enhanced-monitoring-collector"]
+            resolution_required: "Upgrade Salt Hybrid to v2.5.0 or higher"
+        architecture_coverage_gaps:
+          - service_type: "API Gateway"
+            coverage_impact: "No traffic collection possible"
+            collectors_blocked: ["api-gateway-collector"]
+            business_impact: "Complete visibility loss for API traffic"
+          - service_type: "Load Balancer"
+            coverage_impact: "Limited log collection"
+            collectors_blocked: ["enhanced-monitoring-collector"]
+            business_impact: "Reduced monitoring capabilities"
+        remediation_required: true
+
     deployment_options:  # Final optimized options based on viable collectors
       - option_id: 1
         option_name: "Optimized API Gateway Deployment"
@@ -315,17 +337,29 @@ When you need comprehensive architecture analysis:
    - Salt Security knowledge base prerequisites
    - Service configurations and network topology
    ```
-2. **Architecture Analysis Process**:
+2. **Access Historical Session Data** using Bash tool for deployment patterns and success rates:
+   ```bash
+   # Customer-specific deployment history
+   find /sessions/{api_key}/ -name "*.json" -type f | head -10
+   cat /sessions/{api_key}/latest/deployment_context.json
+   cat /sessions/{api_key}/latest/session_metadata.json
+
+   # Anonymized deployment patterns for similar architectures
+   find /learning-sessions/ -name "architecture_pattern.json" | grep {architecture_hash}
+   cat /learning-sessions/{pattern_hash}/success_metrics.json
+   ```
+3. **Architecture Analysis Process**:
    - Process cloud assets data to understand complete customer architecture
    - Compare against Salt Security knowledge base requirements
+   - Analyze historical deployment success patterns for similar architectures
    - Identify gaps between current state and prerequisites
-   - Assess traffic patterns and scaling requirements
-3. **Deployment Options Generation**:
-   - If multiple viable paths exist, create options comparison table
-   - Include pros/cons analysis for each option
-   - Provide architecture fit assessment for each option
-4. If data is incomplete, set status to "partial" and list knowledge_gaps
-5. Always provide architecture-based recommendations with clear rationale
+   - Assess traffic patterns and scaling requirements based on historical data
+4. **Deployment Options Generation**:
+   - If multiple viable paths exist, create options comparison table with historical success rates
+   - Include pros/cons analysis for each option with lessons learned from history
+   - Provide architecture fit assessment based on similar successful deployments
+5. If data is incomplete, set status to "partial" and list knowledge_gaps
+6. Always provide architecture-based recommendations with clear rationale supported by historical evidence
 
 ### Quality Assurance
 - Validate recommendations against flowchart guidance
@@ -339,6 +373,8 @@ Set escalation_required to true when:
 - Multiple conflicting requirements identified
 - Success probability below 60%
 - Customer requests exceed standard Salt collector capabilities
+- **No viable collectors exist due to missing prerequisites**: When all collectors require prerequisites that cannot be satisfied, preventing any deployment from proceeding
+- **Architecture coverage cannot be achieved**: When available collectors cannot provide full coverage of customer's architecture due to prerequisite gaps
 
 ## Implementation Instructions
 
@@ -404,7 +440,13 @@ Task: Load and execute agents/data-extractor-agent.md with request for:
 
 **Step 8 - Optimal Deployment Plan**:
 - Filter collectors to only those where prerequisites are fully met
-- Apply KPI optimization for deployment efficiency:
+- **Handle Missing Prerequisites Scenario**: If no viable collectors exist after filtering:
+  1. Set `no_viable_collectors: true` in missing_prerequisites_scenario
+  2. Populate missing_prerequisites_summary with detailed prerequisite gaps
+  3. Document architecture_coverage_gaps showing impact on traffic collection
+  4. Set `escalation_required: true` and include detailed remediation guidance
+  5. Provide specific resolution steps for each missing prerequisite
+- **Standard Flow**: If viable collectors exist, apply KPI optimization for deployment efficiency:
   - **Full Coverage**: Maximize traffic collection completeness
   - **Lower Risk**: Prioritize proven, stable approaches
   - **Lower Effort**: Minimize implementation complexity

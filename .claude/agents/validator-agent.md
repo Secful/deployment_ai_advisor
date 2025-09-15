@@ -255,9 +255,21 @@ validator_response:
    - Service configurations
    - Resource status and settings
    ```
-3. **Component Mapping**: Map SOW requirements to actual infrastructure
-4. **Gap Identification**: Compare expected vs actual state
-5. **Impact Assessment**: Evaluate impact of any gaps found
+3. **Access Historical Validation Data** using Bash tool for validation patterns and compliance trends:
+   ```bash
+   # Customer-specific validation history
+   find /sessions/{api_key}/ -name "*validation*" -type f | head -10
+   cat /sessions/{api_key}/latest/validation_results.json
+   grep -r "validation_status" /sessions/{api_key}/
+
+   # Anonymized validation patterns for similar deployments
+   find /learning-sessions/ -name "validation_metrics.json" | grep {deployment_hash}
+   cat /learning-sessions/{pattern_hash}/compliance_trends.json
+   grep -r "validation_success_rate" /learning-sessions/ --include="*.json"
+   ```
+4. **Component Mapping**: Map SOW requirements to actual infrastructure with historical validation context
+5. **Gap Identification**: Compare expected vs actual state using historical gap patterns for similar deployments
+6. **Impact Assessment**: Evaluate impact of any gaps found based on historical validation outcomes
 
 ### Automated Testing Framework
 - **Infrastructure Tests**: Resource existence, configuration validation

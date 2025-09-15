@@ -247,6 +247,13 @@ reporter_response:
 
 ## SOW Template Library
 
+### Example SOW Reports
+Use the comprehensive SOW examples in `/examples/` as reference for output format and structure:
+- `examples/salt_security_aws_deployment_sow.md` - Standard deployment with viable collectors
+- `examples/salt_security_blocked_deployment_sow.md` - Deployment blocked by missing prerequisites
+
+These examples demonstrate proper formatting, Mermaid diagrams, deployment options analysis, and comprehensive implementation guidance.
+
 ### Standard SOW Template
 ```markdown
 # Salt Security Traffic Collection Deployment SOW
@@ -296,12 +303,14 @@ reporter_response:
 ## Deployment Options Analysis
 *Include this section when multiple deployment options are available*
 
-| Option | Complexity | Time | Success Rate | Architecture Fit | Pros | Cons |
-|--------|------------|------|--------------|------------------|------|------|
-| [Option 1] | [1-10] | [X hours] | [XX%] | [Fit description] | [Pros list] | [Cons list] |
-| [Option 2] | [1-10] | [X hours] | [XX%] | [Fit description] | [Pros list] | [Cons list] |
+| Option | Complexity | Time | Success Rate | Architecture Fit | Missing Prerequisites | Pros | Cons |
+|--------|------------|------|--------------|------------------|----------------------|------|------|
+| [Option 1] | [1-10] | [X hours] | [XX%] | [Fit description] | [None/List prerequisites] | [Pros list] | [Cons list] |
+| [Option 2] | [1-10] | [X hours] | [XX%] | [Fit description] | [None/List prerequisites] | [Pros list] | [Cons list] |
 
 **Recommended Option**: [Selected option] based on [rationale]
+
+**Next Steps**: Once you chose the collector that suits you the most, I invite you to follow its deployment procedure through the dashboard, in the connector hub.
 
 ## Implementation Plan
 
@@ -342,6 +351,37 @@ reporter_response:
 - Monitoring and maintenance procedures
 - Troubleshooting contacts and escalation
 - Documentation and runbook locations
+
+## Missing Prerequisites Sections
+*Include this section when no viable collectors exist due to missing prerequisites*
+
+### ⚠️ Deployment Blocked - Prerequisites Required
+
+**Critical Prerequisites Missing**: The following prerequisites must be resolved before deployment can proceed:
+
+**Missing Prerequisites Summary**:
+- **[Prerequisite Type]**: [Description]
+  - **Affected Collectors**: [List of collectors blocked]
+  - **Resolution Required**: [Specific steps needed]
+  - **Business Impact**: [Impact on traffic collection]
+
+**Architecture Coverage Impact**:
+- **[Service Type]**: [Coverage impact description]
+  - **Collectors Blocked**: [List of affected collectors]
+  - **Business Impact**: [Visibility and monitoring impact]
+
+**Recommended Actions**:
+1. **Address Prerequisites**: Resolve all missing prerequisites listed above
+2. **Validation**: Validate prerequisite resolution in non-production environment
+3. **Re-run Advisor**: Re-run deployment advisor after prerequisites are resolved
+4. **Escalation**: Contact Salt Security support if prerequisites cannot be resolved
+
+**Alternative Approaches**:
+- Consider phased deployment starting with services where prerequisites are met
+- Evaluate alternative collector configurations that may have fewer prerequisites
+- Review architecture modifications that could reduce prerequisite complexity
+
+---
 
 ## Source Transparency and Best-Effort Sections
 *Include this section when confidence is below 7/10 or sources are unavailable*
@@ -499,8 +539,14 @@ When activated by the orchestrator (as final sub-agent in all flows to generate 
    - Reference confidence_breakdown for detailed sub-agent scores
    - Check source_availability to identify successfully consulted sources
    - Determine if degradation_applied flag is set
-3. Generate appropriate documentation based on scope (SOW or validation report)
-4. **Apply Source Transparency Based on Orchestrator Confidence**:
+3. **Handle Missing Prerequisites**: Check deployment_recommendation for missing_prerequisites_scenario:
+   - If `no_viable_collectors: true`, include "Missing Prerequisites Sections" in SOW
+   - Extract missing_prerequisites_summary for detailed prerequisite gaps
+   - Document architecture_coverage_gaps showing business impact
+   - Add "Missing Prerequisites" column to deployment options table with appropriate values
+   - Prioritize escalation guidance for prerequisite resolution
+4. Generate appropriate documentation based on scope (SOW or validation report)
+5. **Apply Source Transparency Based on Orchestrator Confidence**:
    - Use orchestrator's overall_confidence score (don't recalculate)
    - Include confidence scores in Executive Summary
    - Add "Source Transparency and Best-Effort Sections" when overall_confidence < 7/10
