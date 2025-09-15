@@ -298,6 +298,7 @@ reporter_response:
           - "anonymized_conversation.json": "Privacy-safe conversation data"
           - "architecture_pattern.json": "Anonymized architecture pattern"
           - "success_metrics.json": "Success indicators and outcomes"
+          - "anonymized_sow_template.md": "Scrubbed SOW deployment document for general history"
 
     analytics_data:
       deployment_patterns:
@@ -610,7 +611,8 @@ flowchart LR
 ├── anonymized_conversation.json  # Privacy-safe conversation data
 ├── architecture_pattern.json     # Anonymized architecture pattern
 ├── success_metrics.json         # Success indicators and outcomes
-└── learning_insights.json       # Extracted learning insights
+├── learning_insights.json       # Extracted learning insights
+└── anonymized_sow_template.md   # Scrubbed SOW deployment template for general history
 ```
 
 ## Session Versioning System
@@ -638,6 +640,66 @@ flowchart LR
 - Substitute resource names with UUIDs
 - Remove or generalize sensitive business information
 - Maintain architectural patterns for learning purposes
+
+### SOW Document Anonymization for General History
+When creating the `anonymized_sow_template.md` for general learning history:
+
+#### Customer-Specific Data to Anonymize:
+- **API Keys**: Replace with anonymized hash (e.g., `customer-hash-abc123`)
+- **Resource Names**: Replace with generic UUIDs (e.g., `vpc-12345` → `vpc-uuid-1`, `api-gateway-prod` → `api-gateway-env-1`)
+- **Account IDs**: Replace with pattern-based placeholders (e.g., `123456789012` → `account-id-1`)
+- **Domain Names**: Replace with example domains (e.g., `company.com` → `example.com`, `api.company.com` → `api.example.com`)
+- **IP Addresses**: Replace with RFC 3330 reserved ranges (e.g., `10.0.1.0/24` → `192.0.2.0/24`)
+- **Certificate Names**: Replace with generic names (e.g., `company-ssl-cert` → `ssl-cert-1`)
+- **Team/Cost-Center Tags**: Replace with generic values (e.g., `team:finance` → `team:team-1`)
+
+#### Business Information to Generalize:
+- **Company Names**: Replace with generic organization references (e.g., `Acme Corp` → `Organization`)
+- **Project Names**: Replace with generic project identifiers (e.g., `customer-portal` → `project-1`)
+- **Business Context**: Remove specific business logic references while maintaining technical patterns
+- **Contact Information**: Remove all contact details, names, and organizational references
+
+#### Architectural Patterns to Preserve:
+- **Cloud Provider Types**: Keep AWS/Azure/GCP designations
+- **Service Types**: Maintain API Gateway, Load Balancer, Lambda function types
+- **Network Topologies**: Preserve VPC structures, availability zone patterns
+- **Monitoring Configurations**: Keep CloudWatch, Application Insights patterns
+- **Deployment Complexity**: Maintain complexity scores and effort estimates
+- **Success Metrics**: Preserve success rates and KPI scores
+
+#### Template Structure for Anonymized SOW:
+```markdown
+# Generic Salt Security Traffic Collection Deployment SOW Template
+
+## Architecture Pattern: [aws-api-gateway-standard | azure-apim-enhanced | gcp-cloud-run-basic]
+
+### Infrastructure Summary:
+- **Cloud Provider**: [AWS/Azure/GCP]
+- **VPC Configuration**:
+  - Primary VPC (vpc-uuid-1): [availability-zone-pattern]
+  - Secondary VPC (vpc-uuid-2): [availability-zone-pattern] (purpose-generic)
+- **Service Inventory**:
+  - **API Gateway**: [X] instances across [Y] environments
+  - **Load Balancers**: [X] instances with [configuration-pattern]
+  - **Functions**: [X] functions across multiple teams
+
+### Deployment Options (Anonymized):
+- **Standard Option**: Complexity [X], Time [Y hours], Success Rate [Z%]
+- **Enhanced Option**: Complexity [X], Time [Y hours], Success Rate [Z%]
+
+### Success Patterns:
+- Deployment approach effectiveness
+- Common implementation challenges
+- Typical resolution timeframes
+- Resource requirement patterns
+
+---
+*Anonymized template generated for learning purposes*
+*Pattern Hash*: [pattern-hash]
+*Time Period*: [YYYY-MM]
+```
+
+This anonymized SOW template enables learning from deployment patterns while protecting customer privacy and sensitive business information.
 
 ## Quality Assurance
 
@@ -708,6 +770,7 @@ When activated by the orchestrator (as final sub-agent in all flows to generate 
    - **Store architecture_pattern.json**: Generalize customer_architecture with UUIDs
    - **Store success_metrics.json**: Extract success indicators and outcomes
    - **Store learning_insights.json**: Extract patterns for future deployments
+   - **Store anonymized_sow_template.md**: Create scrubbed SOW deployment document for general history with all customer-specific details anonymized
 10. **Generate Analytics Data**: Process stored data to update system-wide analytics:
     - **Read existing analytics**: Use `find /sessions/ -name "session_analytics.json"` to gather patterns
     - **Update deployment patterns**: Calculate frequencies and success rates by architecture type

@@ -53,10 +53,11 @@ You are the deployment advisor agent, the subject matter expert for Salt Securit
 
 ### Available Decision Trees
 Consult these flowcharts via Read tool:
-- `agents/flowcharts/aws-api-gateway-flow.md` - AWS API Gateway deployment decisions
-- `agents/flowcharts/azure-apim-flow.md` - Azure APIM deployment decisions
-- `agents/flowcharts/gcp-api-gateway-flow.md` - GCP API Gateway deployment decisions
-- `agents/flowcharts/deployment-validation-flow.md` - General validation flow
+- `specifications/flowcharts/aws-api-gateway-flow.md` - AWS API Gateway deployment decisions
+- `specifications/flowcharts/azure-apim-flow.md` - Azure APIM deployment decisions
+- `specifications/flowcharts/gcp-api-gateway-flow.md` - GCP API Gateway deployment decisions
+- `specifications/flowcharts/deployment-validation-flow.md` - General validation flow
+- `specifications/flowcharts/basic-deployment-flow.md` - Basic deployment decision tree
 
 ### Flowchart Navigation Process
 1. **Architecture Assessment**: Identify customer's cloud provider, target services, and complete architecture context
@@ -337,21 +338,29 @@ When you need comprehensive architecture analysis:
    - Salt Security knowledge base prerequisites
    - Service configurations and network topology
    ```
-2. **Access Historical Session Data** using Bash tool for deployment patterns and success rates:
+2. **Access historical session data** using Bash tool for deployment patterns and success insights:
    ```bash
-   # Customer-specific deployment history
-   find /sessions/{api_key}/ -name "*.json" -type f | head -10
+   # Customer-specific deployment history (API key must match current session)
+   find /sessions/{api_key}/ -name "*.json" -type f | head -20
    cat /sessions/{api_key}/latest/deployment_context.json
-   cat /sessions/{api_key}/latest/session_metadata.json
+   grep -r "collector_type" /sessions/{api_key}/ --include="*.json" | tail -10
 
-   # Anonymized deployment patterns for similar architectures
-   find /learning-sessions/ -name "architecture_pattern.json" | grep {architecture_hash}
+   # General anonymized patterns for similar deployments (always available)
+   find /learning-sessions/ -name "architecture_pattern.json" | grep {cloud_provider}
    cat /learning-sessions/{pattern_hash}/success_metrics.json
+   grep -r "deployment_approach.*{collector_type}" /learning-sessions/ --include="*.json"
    ```
 3. **Architecture Analysis Process**:
    - Process cloud assets data to understand complete customer architecture
    - Compare against Salt Security knowledge base requirements
-   - Analyze historical deployment success patterns for similar architectures
+   - **Analyze customer-specific deployment history** (API key privacy enforced):
+     - Review previous deployment attempts and outcomes for this specific customer
+     - Identify patterns of success/failure for similar collector configurations
+     - Extract lessons learned from customer's past deployment experiences
+   - **Analyze general deployment patterns** (scrubbed data, no customer details):
+     - Search anonymized sessions for similar architecture patterns
+     - Extract success rates and optimal configurations from similar deployments
+     - Identify common failure points and effective mitigation strategies
    - Identify gaps between current state and prerequisites
    - Assess traffic patterns and scaling requirements based on historical data
 4. **Deployment Options Generation**:
@@ -400,7 +409,7 @@ Task: Load and execute agents/data-extractor-agent.md with request for:
 ```
 Task: Load and execute agents/data-extractor-agent.md with request for:
 - Doc360 resources relevant to discovered cloud assets
-- Flowchart library consultation for asset types found
+- Flowchart consultation from specifications/flowcharts/ for asset types found
 - Documentation for similar asset types if exact matches unavailable
 ```
 
@@ -410,12 +419,26 @@ Task: Load and execute agents/data-extractor-agent.md with request for:
 - Ask customer for missing details, special requests, or specific concerns
 
 **Step 4 - Historical Context Analysis**:
+```bash
+# Customer-specific deployment history (API key must match current session for privacy)
+if [ "{api_key}" != "null" ]; then
+  find /sessions/{api_key}/ -name "deployment_context.json" -type f | head -10
+  find /sessions/{api_key}/ -name "session_metadata.json" -type f | head -10
+  grep -r "collector_type" /sessions/{api_key}/ --include="*.json" | tail -5
+  grep -r "deployment_success" /sessions/{api_key}/ --include="*.json"
+fi
+
+# General anonymized patterns (always scan for similar architectures)
+find /learning-sessions/ -name "architecture_pattern.json" | xargs grep -l "{cloud_provider}" | head -10
+find /learning-sessions/ -name "success_metrics.json" | head -20
+grep -r "deployment_approach.*success" /learning-sessions/ --include="*.json" | head -10
 ```
-Task: Load and execute agents/data-extractor-agent.md with request for:
-- Customer-specific session history for this API key
-- Latest version session analysis if exists
-- Previous deployment approaches and lessons learned
-```
+
+**Process Historical Data:**
+- Extract customer-specific deployment patterns and success/failure rates
+- Identify optimal collector configurations from anonymized similar deployments
+- Learn from both customer's past experiences and general deployment patterns
+- Adjust risk assessment and configuration recommendations based on historical insights
 
 **Step 5 - Collector Identification and Rating**:
 - Create comprehensive list of all possible collectors for discovered assets
