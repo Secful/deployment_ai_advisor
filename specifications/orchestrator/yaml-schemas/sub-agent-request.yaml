@@ -1,0 +1,32 @@
+# Sub-Agent Request Schema
+# Used by orchestrator to send structured requests to specialized sub-agents
+
+orchestrator_id: "orchestrator-session-{uuid}"
+request_type: "deployment" | "troubleshooting" | "validation" | "reporting" | "data_extraction"
+user_query: "Original user question or command"
+conversation_context:
+  previous_questions:
+    - "What collector should I use for AWS API Gateway?"
+    - "How do I set up prerequisites?"
+  cloud_provider: "aws" | "azure" | "gcp" | null
+  services_mentioned:
+    - "api_gateway"
+    - "lambda"
+    - "vpc"
+  errors_reported:
+    - error_type: "permission_denied"
+      error_message: "Access denied when creating IAM role"
+      architecture_context: "AWS API Gateway with Lambda backend"
+  deployment_stage: "planning" | "implementation" | "validation" | "troubleshooting"
+customer_context:
+  company_id: "anonymized-hash" | null  # MD5 hash for general sessions
+  architecture_data:
+    cloud_assets: {} | null  # From Salt API MCP
+    current_deployment: {} | null
+    prerequisites_status: {} | null
+  session_history:
+    successful_deployments: []
+    previous_issues: []
+    satisfaction_indicators: []
+retry_count: 0  # Incremented by orchestrator on each retry attempt
+urgency_level: "low" | "medium" | "high"  # Based on error severity or customer indicators

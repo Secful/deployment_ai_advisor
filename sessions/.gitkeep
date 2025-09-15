@@ -1,0 +1,6 @@
+# Session Storage Directory
+
+This directory contains customer-specific deployment advisor sessions.
+Each customer gets their own subdirectory with versioned sessions.
+
+Directory structure created automatically by the system.

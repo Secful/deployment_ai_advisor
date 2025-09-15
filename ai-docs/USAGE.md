@@ -7,20 +7,28 @@ Traffic Collection Deployment AI Agent assists Salt Security customers with depl
 
 ### Salt Commands Integration
 ```bash
-# Start deployment guidance session
+# Start deployment guidance session (🚧 Planned)
 /salt:deploy:start
 
-# Get deployment recommendation
+# Get deployment recommendation (🚧 Planned)
 /salt:deploy:advise "What collector works with my AWS API Gateway?"
 
-# Troubleshoot deployment errors
+# Troubleshoot deployment errors (🚧 Planned)
 /salt:deploy:troubleshoot "I'm getting connection timeout errors"
 
-# Validate deployment status
+# Validate deployment status (🚧 Planned)
 /salt:deploy:validate
 
-# Generate deployment SOW
+# Generate deployment SOW (🚧 Planned)
 /salt:deploy:report
+```
+
+### Currently Available - MCP Integration
+```bash
+# Test Salt API MCP server (✅ Available)
+cd salt-api-mcp/
+npm run test-mode -- list_cloud_assets --limit 10
+npm run test-mode -- get_cloud_asset --id your-asset-id
 ```
 
 ### Natural Language Queries

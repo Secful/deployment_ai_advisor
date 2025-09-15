@@ -1,0 +1,63 @@
+# Sub-Agent Response Schema
+# Standardized response format that all sub-agents must return to orchestrator
+
+status: "success" | "partial" | "fail"
+data:
+  # Sub-agent specific response data - varies by agent type
+
+  # For Deployment Advisor responses:
+  recommendations:
+    - collector_type: "aws_api_gateway_collector"
+      description: "Recommended collector for AWS API Gateway traffic collection"
+      prerequisites:
+        - "IAM role with API Gateway permissions"
+        - "VPC endpoint configuration"
+      deployment_complexity: "medium"
+      traffic_coverage: 95
+      estimated_deployment_time: "2-4 hours"
+      documentation_link: "doc360://collectors/aws-api-gateway"
+
+  # For Error Handler responses:
+  analysis_results:
+    error_classification: "configuration_error" | "permission_error" | "network_error"
+    root_cause_analysis: "Description of underlying issue"
+    solution_steps:
+      - step: 1
+        action: "Check IAM role permissions"
+        expected_outcome: "Role should have apigateway:* permissions"
+        validation_command: "aws iam get-role-policy --role-name collector-role"
+
+  # For Validator responses:
+  validation_status:
+    deployment_complete: true | false
+    missing_components:
+      - component: "traffic_mirroring"
+        status: "not_configured"
+        impact: "No traffic will be collected"
+    coverage_analysis:
+      endpoints_covered: 8
+      endpoints_total: 10
+      coverage_percentage: 80
+
+retry_count: 0-3  # Incremented on each failed attempt
+errors:
+  - "Error message describing what went wrong"
+  - "Secondary error or warning message"
+knowledge_gaps:
+  - "Information not available in current data sources"
+  - "Customer-specific details needed for complete analysis"
+external_diffs:
+  - source: "kb" | "web" | "aws_docs" | "azure_docs" | "gcp_docs"
+    conflict_description: "KB says X but AWS docs say Y"
+    recommended_resolution: "Follow AWS docs as authoritative for AWS-specific configurations"
+    confidence_level: 1-10
+escalation_required: true | false
+escalation_reason: "Technical issue beyond automated resolution" | null
+confidence_score: 1-10  # Agent's confidence in the provided response
+processing_time_seconds: 45.2
+data_sources_used:
+  - "historical_sessions"
+  - "document360_kb"
+  - "web_search"
+  - "salt_api"
+next_recommended_action: "validate_deployment" | "fix_prerequisites" | "escalate_to_support" | null
