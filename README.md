@@ -1,5 +1,7 @@
 # Deployment AI Advisor
 
+> **⚠️ OBSOLETE — Hackathon project.** This repository was built as a hackathon project and is no longer maintained. It is kept for reference only.
+
 AI-powered assistant system for Salt Security customers to deploy, troubleshoot, and manage traffic collection across cloud environments through Claude Code CLI interactions.
 
 ## Quick Start
